@@ -11,7 +11,6 @@ import com.epam.esm.logic.interfaces.CertificateLogic;
 import com.epam.esm.logic.logicutils.ObjectToMapConverter;
 import com.google.common.base.CaseFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,7 +25,7 @@ public class CertificateLogicImpl implements CertificateLogic {
     private CertificateDao certificateDao;
 
     @Autowired
-    public void setCertificateDao(@Qualifier("dao") CertificateDao certificateDao) {
+    public void setCertificateDao( CertificateDao certificateDao) {
         this.certificateDao = certificateDao;
     }
 
