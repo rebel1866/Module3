@@ -82,14 +82,4 @@ public class AppConfig {
         bean.setSuffix(".jsp");
         return bean;
     }
-
-    @Bean
-    HandlerExceptionResolver errorHandler() {
-        SimpleMappingExceptionResolver resolver = new SimpleMappingExceptionResolver();
-        Properties properties = new Properties();
-        properties.setProperty(UiControllerException.class.getName(), "error");
-        resolver.setExceptionMappings(properties);
-        resolver.setDefaultErrorView("error");
-        return resolver;
-    }
 }
