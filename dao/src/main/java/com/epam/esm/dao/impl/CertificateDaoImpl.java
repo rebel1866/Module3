@@ -7,6 +7,7 @@ import com.epam.esm.dao.mappers.TagMapper;
 import com.epam.esm.dao.sqlgenerator.SqlGenerator;
 import com.epam.esm.entity.Certificate;
 import com.epam.esm.entity.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +32,7 @@ public class CertificateDaoImpl implements CertificateDao {
     private static final String removeCertificateSql = "delete from gifts.gift_certificates where gift_certificate_id = ?";
     private static final String updateSql = "update gifts.gift_certificates set where gift_certificate_id=?";
 
-
+    @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }

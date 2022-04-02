@@ -10,6 +10,7 @@ import com.epam.esm.logic.exceptions.LogicException;
 import com.epam.esm.logic.interfaces.TagLogic;
 import com.epam.esm.logic.logicutils.ObjectToMapConverter;
 import com.google.common.base.CaseFormat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -20,6 +21,7 @@ import java.util.Map;
 public class TagLogicImpl implements TagLogic {
     private TagDao tagDao;
 
+    @Autowired
     public void setTagDao(TagDao tagDao) {
         this.tagDao = tagDao;
     }

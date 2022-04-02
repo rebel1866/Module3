@@ -5,6 +5,7 @@ import com.epam.esm.dao.interfaces.TagDao;
 import com.epam.esm.dao.mappers.TagMapper;
 import com.epam.esm.dao.sqlgenerator.SqlGenerator;
 import com.epam.esm.entity.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -19,6 +20,7 @@ public class TagDaoImpl implements TagDao {
     private static final String addTagSql = "insert into gifts.tags (tag_name) values (?)";
     private static final String deleteTagSql = "delete from gifts.tags where tag_id =?";
 
+    @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
