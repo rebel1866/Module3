@@ -2,8 +2,12 @@ package com.epam.esm.controller.configuration;
 
 import com.epam.esm.dao.impl.CertificateDaoImpl;
 import com.epam.esm.dao.impl.TagDaoImpl;
+import com.epam.esm.dao.interfaces.CertificateDao;
+import com.epam.esm.dao.interfaces.TagDao;
 import com.epam.esm.logic.impl.CertificateLogicImpl;
 import com.epam.esm.logic.impl.TagLogicImpl;
+import com.epam.esm.logic.interfaces.CertificateLogic;
+import com.epam.esm.logic.interfaces.TagLogic;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -38,28 +42,28 @@ public class AppConfig {
     }
 
     @Bean
-    public CertificateDaoImpl certificateDao() {
+    public CertificateDao certificateDao() {
         CertificateDaoImpl certificateDao = new CertificateDaoImpl();
         certificateDao.setJdbcTemplate(jdbcTemplate());
         return certificateDao;
     }
 
     @Bean
-    public TagDaoImpl tagDao() {
+    public TagDao tagDao() {
         TagDaoImpl tagDao = new TagDaoImpl();
         tagDao.setJdbcTemplate(jdbcTemplate());
         return tagDao;
     }
 
     @Bean
-    public CertificateLogicImpl certificateLogic() {
+    public CertificateLogic certificateLogic() {
         CertificateLogicImpl certificateLogic = new CertificateLogicImpl();
         certificateLogic.setCertificateDao(certificateDao());
         return certificateLogic;
     }
 
     @Bean
-    public TagLogicImpl tagLogic() {
+    public TagLogic tagLogic() {
         TagLogicImpl tagLogic = new TagLogicImpl();
         tagLogic.setTagDao(tagDao());
         return tagLogic;
