@@ -1,6 +1,5 @@
 package com.epam.esm.controller.configuration;
 
-import com.epam.esm.controller.exceptions.UiControllerException;
 import com.epam.esm.dao.impl.CertificateDaoImpl;
 import com.epam.esm.dao.impl.TagDaoImpl;
 import com.epam.esm.logic.impl.CertificateLogicImpl;
@@ -11,14 +10,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-import java.util.Properties;
 
 @Configuration
 @EnableWebMvc

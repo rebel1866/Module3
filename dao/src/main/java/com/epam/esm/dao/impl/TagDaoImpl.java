@@ -5,6 +5,7 @@ import com.epam.esm.dao.interfaces.TagDao;
 import com.epam.esm.dao.mappers.TagMapper;
 import com.epam.esm.dao.sqlgenerator.SqlGenerator;
 import com.epam.esm.entity.Tag;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 

@@ -23,6 +23,7 @@ import java.util.Map;
 public class CertificateLogicImpl implements CertificateLogic {
 
     private CertificateDao certificateDao;
+    private static final String dateTimePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS";
 
     @Autowired
     public void setCertificateDao( CertificateDao certificateDao) {
@@ -51,7 +52,7 @@ public class CertificateLogicImpl implements CertificateLogic {
 
     @Override
     public void addCertificate(Certificate certificate) throws LogicException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimePattern);
         LocalDateTime now = LocalDateTime.parse(formatter.format(LocalDateTime.now()));
         certificate.setCreationDate(now);
         certificate.setLastUpdateTime(now);
