@@ -37,8 +37,8 @@
 <form action="${pageContext.request.contextPath}/tags" method="post" onsubmit="disableEmptyInputs(this)">
     <input type="hidden" name="tagName" value="${params.tagName}"/>
     Sort by :
-    <button name="sorting" value="order by tag_id">id</button>
-    <button name="sorting" value="order by tag_name">tag name</button>
+    <button name="sorting" value="tag_id">id</button>
+    <button name="sorting" value="tag_name">tag name</button>
     <label>Sorting order:
         <select name="sortingOrder">
             <option value="asc">Asc</option>

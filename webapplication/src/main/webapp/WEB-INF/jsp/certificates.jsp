@@ -69,10 +69,10 @@ ${message}
     <input type="hidden" name="priceFrom" value="${params.priceFrom}"/>
     <input type="hidden" name="priceTo" value="${params.priceTo}"/>
     Sort by :
-    <button name="sorting" value="order by price">price</button>
-    <button name="sorting" value="order by certificate_name">name</button>
-    <button name="sorting" value="order by creation_date">date</button>
-    <button name="sorting" value="order by certificate_name, creation_date">name and date</button>
+    <button name="sorting" value="price">price</button>
+    <button name="sorting" value="certificate_name">name</button>
+    <button name="sorting" value="creation_date">date</button>
+    <button name="sorting" value="certificate_name, creation_date">name and date</button>
     <label>Sorting order:
         <select name="sortingOrder">
             <option value="asc">Asc</option>

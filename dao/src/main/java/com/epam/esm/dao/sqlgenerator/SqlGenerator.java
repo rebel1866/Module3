@@ -80,8 +80,8 @@ public class SqlGenerator {
             }
             if (iterator.hasNext()) sqlSetPart.append(", ");
         }
-        sqlSetPart.append(" ");
         int insertIndex = 35;
+        sqlSetPart.append(" ");
         StringBuilder updateSQlBuilder = new StringBuilder(updateSql);
         updateSQlBuilder.insert(insertIndex, sqlSetPart);
         return updateSQlBuilder.toString();
