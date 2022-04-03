@@ -1,6 +1,6 @@
 package com.epam.esm.controller.configuration;
 
-import com.epam.esm.dao.configuration.DaoConfig;
+import com.epam.esm.dao.configuration.DaoConfigMySql;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class WebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -12,7 +12,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[]{ControllerConfig.class, DaoConfig.class};
+        return new Class[]{ControllerConfig.class, DaoConfigMySql.class};
     }
 
     @Override
