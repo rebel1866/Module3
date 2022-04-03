@@ -1,29 +1,18 @@
-package com.epam.esm.controller.configuration;
+package com.epam.esm.dao.configuration;
 
-import com.epam.esm.dao.impl.CertificateDaoImpl;
-import com.epam.esm.dao.impl.TagDaoImpl;
-import com.epam.esm.dao.interfaces.CertificateDao;
-import com.epam.esm.dao.interfaces.TagDao;
-import com.epam.esm.logic.impl.CertificateLogicImpl;
-import com.epam.esm.logic.impl.TagLogicImpl;
-import com.epam.esm.logic.interfaces.CertificateLogic;
-import com.epam.esm.logic.interfaces.TagLogic;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
 
 
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.epam.esm")
-public class AppConfig {
+public class DaoConfig {
     @Bean
     public BasicDataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
@@ -44,14 +33,5 @@ public class AppConfig {
     @Bean
     public DataSourceTransactionManager transactionManager() {
         return new DataSourceTransactionManager(dataSource());
-    }
-
-    @Bean
-    public ViewResolver internalResourceViewResolver() {
-        InternalResourceViewResolver bean = new InternalResourceViewResolver();
-        bean.setViewClass(JstlView.class);
-        bean.setPrefix("/WEB-INF/jsp/");
-        bean.setSuffix(".jsp");
-        return bean;
     }
 }
