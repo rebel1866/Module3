@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Certificate implements Serializable {
+    private static final long SerialVersionUID = 5545654654564504L;
     private Integer giftCertificateId;
     @NotBlank(message = "certificateName must be filled")
     private String certificateName;
@@ -36,6 +37,9 @@ public class Certificate implements Serializable {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime lastUpdateTime;
 
+    public Certificate() {
+
+    }
 
     public Integer getGiftCertificateId() {
         return giftCertificateId;
