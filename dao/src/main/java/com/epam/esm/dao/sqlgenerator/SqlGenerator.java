@@ -1,6 +1,7 @@
 package com.epam.esm.dao.sqlgenerator;
 
 import com.google.common.base.CaseFormat;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -36,7 +37,7 @@ public class SqlGenerator {
     }
 
     private static String addOrderBlock(String targetSql, String sorting, String sortingOrder) {
-        if (sorting != null) return targetSql + " " + sorting + " " + sortingOrder;
+        if (sorting != null) return targetSql + " order by " + sorting + " " + sortingOrder;
         else return targetSql;
     }
 
@@ -50,7 +51,7 @@ public class SqlGenerator {
             var entry = iterator.next();
             String key = entry.getKey();
             String value = String.valueOf(entry.getValue());
-            if (!isNumber(value)) {
+            if (!StringUtils.isNumeric(value)) {
                 value = wrapApostrophe(value);
             }
             Action action = actions.get(key);
@@ -58,15 +59,6 @@ public class SqlGenerator {
             if (iterator.hasNext()) sourceSql.append(" and ");
         }
         return sourceSql.toString();
-    }
-
-    private static boolean isNumber(String value) {
-        try {
-            Integer.parseInt(value);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
     }
 
     private static String wrapApostrophe(String value) {
@@ -81,7 +73,7 @@ public class SqlGenerator {
             Map.Entry<String, String> entry = iterator.next();
             String key = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, entry.getKey());
             String value = String.valueOf(entry.getValue());
-            if (!isNumber(value)) {
+            if (!StringUtils.isNumeric(value)) {
                 sqlSetPart.append(key).append("=").append("'").append(value).append("'");
             } else {
                 sqlSetPart.append(key).append("=").append(value);
@@ -89,8 +81,9 @@ public class SqlGenerator {
             if (iterator.hasNext()) sqlSetPart.append(", ");
         }
         sqlSetPart.append(" ");
+        int insertIndex = 35;
         StringBuilder updateSQlBuilder = new StringBuilder(updateSql);
-        updateSQlBuilder.insert(35, sqlSetPart);
+        updateSQlBuilder.insert(insertIndex, sqlSetPart);
         return updateSQlBuilder.toString();
     }
 }

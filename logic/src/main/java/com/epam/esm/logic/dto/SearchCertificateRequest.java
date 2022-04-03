@@ -11,9 +11,9 @@ public class SearchCertificateRequest {
     private Integer priceFrom;
     @Positive(message = "Field priceTo must be positive number")
     private Integer priceTo;
-    @Pattern(regexp = "order by price|order by certificate_name|order by creation_date|order by certificate_name, creation_date",
-            message = "Acceptable values for field \"sorting\" are: 1)order by price 2)order by certificate_name " +
-                    "3)order by creation_date 4)order by certificate_name, creation_date")
+    @Pattern(regexp = "price|certificate_name|creation_date|certificate_name, creation_date",
+            message = "Acceptable values for field \"sorting\" are: 1)price 2)certificate_name " +
+                    "3)creation_date 4)certificate_name, creation_date")
     private String sorting;
     @Pattern(regexp = "asc|desc", message = "sorting_order must be: \"asc\" or \"desc\"")
     private String sortingOrder;
