@@ -8,6 +8,7 @@ import com.epam.esm.logic.dto.SearchCertificateRequest;
 import com.epam.esm.logic.dto.UpdateCertificateRequest;
 import com.epam.esm.logic.exceptions.LogicException;
 import com.epam.esm.logic.interfaces.CertificateLogic;
+import com.epam.esm.testconfig.LogicTestConfig;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +20,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import java.sql.SQLException;
@@ -28,8 +30,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-@ContextConfiguration(locations = "classpath:application-context-test.xml")
 @ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = LogicTestConfig.class)
+@WebAppConfiguration
 class CertificateLogicImplTest {
 
     @Autowired

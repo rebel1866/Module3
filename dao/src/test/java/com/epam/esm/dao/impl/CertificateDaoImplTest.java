@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import com.epam.esm.dao.exceptions.DaoException;
+import com.epam.esm.dao.impl.testconfig.DaoTestConfig;
 import com.epam.esm.dao.interfaces.CertificateDao;
 import com.epam.esm.entity.Certificate;
 import com.epam.esm.entity.Tag;
@@ -23,10 +25,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
-@ContextConfiguration(locations = "classpath:application-context-test.xml")
 @ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = DaoTestConfig.class)
+@WebAppConfiguration
 public class CertificateDaoImplTest {
 
     @Autowired
