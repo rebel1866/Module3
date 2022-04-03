@@ -22,7 +22,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.epam.esm.controller")
+@ComponentScan("com.epam.esm")
 public class AppConfig {
     @Bean
     public BasicDataSource dataSource() {
@@ -39,34 +39,6 @@ public class AppConfig {
     @Bean
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
-    }
-
-    @Bean
-    public CertificateDao certificateDao() {
-        CertificateDaoImpl certificateDao = new CertificateDaoImpl();
-        certificateDao.setJdbcTemplate(jdbcTemplate());
-        return certificateDao;
-    }
-
-    @Bean
-    public TagDao tagDao() {
-        TagDaoImpl tagDao = new TagDaoImpl();
-        tagDao.setJdbcTemplate(jdbcTemplate());
-        return tagDao;
-    }
-
-    @Bean
-    public CertificateLogic certificateLogic() {
-        CertificateLogicImpl certificateLogic = new CertificateLogicImpl();
-        certificateLogic.setCertificateDao(certificateDao());
-        return certificateLogic;
-    }
-
-    @Bean
-    public TagLogic tagLogic() {
-        TagLogicImpl tagLogic = new TagLogicImpl();
-        tagLogic.setTagDao(tagDao());
-        return tagLogic;
     }
 
     @Bean
