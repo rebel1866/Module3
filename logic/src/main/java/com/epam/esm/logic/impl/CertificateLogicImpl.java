@@ -2,7 +2,6 @@ package com.epam.esm.logic.impl;
 
 import com.epam.esm.dto.SearchCertificateRequest;
 import com.epam.esm.dto.UpdateCertificateRequest;
-import com.epam.esm.dto.DeleteByIdRequest;
 import com.epam.esm.exception.DaoException;
 import com.epam.esm.dao.CertificateDao;
 import com.epam.esm.entity.Certificate;
@@ -26,7 +25,7 @@ public class CertificateLogicImpl implements CertificateLogic {
     private static final String dateTimePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS";
 
     @Autowired
-    public void setCertificateDao( CertificateDao certificateDao) {
+    public void setCertificateDao(CertificateDao certificateDao) {
         this.certificateDao = certificateDao;
     }
 
@@ -64,8 +63,10 @@ public class CertificateLogicImpl implements CertificateLogic {
     }
 
     @Override
-    public void deleteCertificate(DeleteByIdRequest request) throws LogicException {
-        int id = request.getId();
+    public void deleteCertificate(int id) throws LogicException {
+        if (id <= 0) {
+            throw new LogicException("Id must be positive integer number", "errorCode=3");
+        }
         try {
             certificateDao.deleteCertificate(id);
         } catch (DaoException e) {

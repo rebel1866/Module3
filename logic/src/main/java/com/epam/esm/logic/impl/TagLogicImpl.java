@@ -1,7 +1,6 @@
 package com.epam.esm.logic.impl;
 
 import com.epam.esm.dto.AddTagRequest;
-import com.epam.esm.dto.DeleteByIdRequest;
 import com.epam.esm.dto.SearchTagRequest;
 import com.epam.esm.exception.DaoException;
 import com.epam.esm.dao.TagDao;
@@ -56,8 +55,10 @@ public class TagLogicImpl implements TagLogic {
     }
 
     @Override
-    public void deleteTag(DeleteByIdRequest request) throws LogicException {
-        int id = request.getId();
+    public void deleteTag(int id) throws LogicException {
+        if (id <= 0) {
+            throw new LogicException("Id must be positive integer number", "errorCode=3");
+        }
         try {
             tagDao.deleteTag(id);
         } catch (DaoException e) {

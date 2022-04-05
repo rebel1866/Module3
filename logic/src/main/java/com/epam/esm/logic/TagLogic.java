@@ -1,7 +1,6 @@
 package com.epam.esm.logic;
 
 import com.epam.esm.dto.AddTagRequest;
-import com.epam.esm.dto.DeleteByIdRequest;
 import com.epam.esm.dto.SearchTagRequest;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.LogicException;
@@ -13,5 +12,5 @@ public interface TagLogic {
 
     void addTag(AddTagRequest request) throws LogicException;
 
-    void deleteTag(DeleteByIdRequest request) throws LogicException;
+    void deleteTag(int id) throws LogicException;
 }

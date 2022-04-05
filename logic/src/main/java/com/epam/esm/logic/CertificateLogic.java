@@ -2,7 +2,6 @@ package com.epam.esm.logic;
 
 import com.epam.esm.dto.SearchCertificateRequest;
 import com.epam.esm.dto.UpdateCertificateRequest;
-import com.epam.esm.dto.DeleteByIdRequest;
 import com.epam.esm.entity.Certificate;
 import com.epam.esm.exception.LogicException;
 
@@ -13,7 +12,7 @@ public interface CertificateLogic {
 
     void addCertificate(Certificate certificate) throws LogicException;
 
-    void deleteCertificate(DeleteByIdRequest request) throws LogicException;
+    void deleteCertificate(int id) throws LogicException;
 
     void updateCertificate(UpdateCertificateRequest request) throws LogicException;
 }

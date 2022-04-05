@@ -1,7 +1,6 @@
 package com.epam.esm.controller.rest;
 
 import com.epam.esm.dto.AddTagRequest;
-import com.epam.esm.dto.DeleteByIdRequest;
 import com.epam.esm.dto.SearchTagRequest;
 import com.epam.esm.exception.RestControllerException;
 import com.epam.esm.entity.Tag;
@@ -27,7 +26,8 @@ public class TagRestController {
     @GetMapping(value = "/tags", consumes = {"application/json"}, produces = {"application/json"})
     public List<Tag> showCertificates(@ModelAttribute @Valid SearchTagRequest request, BindingResult bindingResult)
             throws RestControllerException {
-        if (bindingResult.hasErrors()) throw new RestControllerException("Wrong input data", "errorCode=3", bindingResult);
+        if (bindingResult.hasErrors())
+            throw new RestControllerException("Wrong input data", "errorCode=3", bindingResult);
         try {
             return tagLogic.findTags(request);
         } catch (LogicException e) {
@@ -39,7 +39,8 @@ public class TagRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public void addCertificate(@RequestBody @Valid AddTagRequest request, BindingResult bindingResult)
             throws RestControllerException {
-        if (bindingResult.hasErrors()) throw new RestControllerException("Wrong input data", "errorCode=3", bindingResult);
+        if (bindingResult.hasErrors())
+            throw new RestControllerException("Wrong input data", "errorCode=3", bindingResult);
         try {
             tagLogic.addTag(request);
         } catch (LogicException e) {
@@ -47,15 +48,11 @@ public class TagRestController {
         }
     }
 
-    @DeleteMapping(value = "/tags", consumes = {"application/json"}, produces = {"application/json"})
+    @DeleteMapping(value = "/tags/{id}", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public void deleteTag(@ModelAttribute @Valid DeleteByIdRequest request,
-                          BindingResult result) throws RestControllerException {
-        if (result.hasErrors())
-            throw new RestControllerException("Wrong input data - incorrect id", "errorCode=3", result);
+    public void deleteTag(@PathVariable("id") int id) throws RestControllerException {
         try {
-            tagLogic.deleteTag(request);
+            tagLogic.deleteTag(id);
         } catch (LogicException e) {
             throw new RestControllerException(e.getMessage(), e.getErrorCode(), e);
         }

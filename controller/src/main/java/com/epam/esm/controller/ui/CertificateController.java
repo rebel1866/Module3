@@ -1,7 +1,6 @@
 package com.epam.esm.controller.ui;
 
 import com.epam.esm.exception.UiControllerException;
-import com.epam.esm.dto.DeleteByIdRequest;
 import com.epam.esm.dto.SearchCertificateRequest;
 import com.epam.esm.dto.SearchTagRequest;
 import com.epam.esm.entity.Certificate;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -101,10 +101,10 @@ public class CertificateController {
     }
 
 
-    @RequestMapping(value = "/delete-certificate", method = RequestMethod.POST)
-    public String deleteCertificate(@ModelAttribute DeleteByIdRequest request) throws UiControllerException {
+    @RequestMapping(value = "/delete-certificate/{id}", method = RequestMethod.POST)
+    public String deleteCertificate(@PathVariable("id") int id) throws UiControllerException {
         try {
-            certificateLogic.deleteCertificate(request);
+            certificateLogic.deleteCertificate(id);
         } catch (LogicException e) {
             throw new UiControllerException(e.getMessage(), e);
         }

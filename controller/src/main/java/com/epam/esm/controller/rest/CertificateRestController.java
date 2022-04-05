@@ -1,7 +1,6 @@
 package com.epam.esm.controller.rest;
 
 import com.epam.esm.exception.RestControllerException;
-import com.epam.esm.dto.DeleteByIdRequest;
 import com.epam.esm.dto.SearchCertificateRequest;
 import com.epam.esm.dto.UpdateCertificateRequest;
 import com.epam.esm.entity.Certificate;
@@ -51,14 +50,10 @@ public class CertificateRestController {
         }
     }
 
-    //id path variable везде
-    @DeleteMapping(value = "/certificates", consumes = {"application/json"}, produces = {"application/json"})
-    public ResponseEntity<HttpStatus> deleteCertificate(@ModelAttribute @Valid DeleteByIdRequest request,
-                                                        BindingResult bindingResult) throws RestControllerException {
-        if (bindingResult.hasErrors()) throw new RestControllerException("Wrong input data - no correct id entered",
-                "errorCode=3", bindingResult);
+    @DeleteMapping(value = "/certificates/{id}", consumes = {"application/json"}, produces = {"application/json"})
+    public ResponseEntity<HttpStatus> deleteCertificate(@PathVariable("id") int id) throws RestControllerException {
         try {
-            certificateLogic.deleteCertificate(request);
+            certificateLogic.deleteCertificate(id);
         } catch (LogicException e) {
             throw new RestControllerException(e.getMessage(), e.getErrorCode(), e);
         }

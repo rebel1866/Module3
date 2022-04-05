@@ -3,7 +3,6 @@ package com.epam.esm;
 
 import com.epam.esm.entity.Certificate;
 import com.epam.esm.entity.Tag;
-import com.epam.esm.dto.DeleteByIdRequest;
 import com.epam.esm.dto.SearchCertificateRequest;
 import com.epam.esm.dto.UpdateCertificateRequest;
 import com.epam.esm.exception.LogicException;
@@ -71,9 +70,7 @@ class CertificateLogicImplTest {
         List<Certificate> certificates = certificateLogic.findCertificates(request);
         Assertions.assertEquals("TEST", certificates.get(0).getCertificateName());
         int id = certificates.get(0).getGiftCertificateId();
-        DeleteByIdRequest request1 = new DeleteByIdRequest();
-        request1.setId(id);
-        certificateLogic.deleteCertificate(request1);
+        certificateLogic.deleteCertificate(id);
         LogicException thrown = Assertions.assertThrows(LogicException.class,
                 () -> certificateLogic.findCertificates(new SearchCertificateRequest()));
         Assertions.assertEquals("No certificates found", thrown.getMessage());
