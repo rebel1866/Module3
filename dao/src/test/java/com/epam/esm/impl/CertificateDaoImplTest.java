@@ -1,14 +1,19 @@
-package com.epam.esm;
+package com.epam.esm.impl;
 
 
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+
+import com.epam.esm.exception.DaoException;
+import com.epam.esm.impl.testconfig.DaoTestConfig;
+import com.epam.esm.interfaces.CertificateDao;
 import com.epam.esm.entity.Certificate;
 import com.epam.esm.entity.Tag;
-import com.epam.esm.dto.DeleteByIdRequest;
-import com.epam.esm.dto.SearchCertificateRequest;
-import com.epam.esm.dto.UpdateCertificateRequest;
-import com.epam.esm.exception.LogicException;
-import com.epam.esm.interfaces.CertificateLogic;
-import com.epam.esm.testconfig.LogicTestConfig;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,20 +28,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
-import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = LogicTestConfig.class)
+@ContextConfiguration(classes = DaoTestConfig.class)
 @WebAppConfiguration
-class CertificateLogicImplTest {
+public class CertificateDaoImplTest {
 
     @Autowired
-    private CertificateLogic certificateLogic;
+    private CertificateDao certificateDao;
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -47,51 +45,45 @@ class CertificateLogicImplTest {
                 new ClassPathResource("scripts.create/certificates_c.sql"));
     }
 
-    @Test
-    public void testAdd() {
-        Certificate certificate = getCertificate();
-        assertDoesNotThrow(() -> certificateLogic.addCertificate(certificate));
-    }
 
     @Test
-    public void testFind() throws LogicException {
+    public void testAddAndSearch() throws DaoException {
         Certificate certificate = getCertificate();
-        certificateLogic.addCertificate(certificate);
-        SearchCertificateRequest request = new SearchCertificateRequest();
-        request.setCertificateName("TEST");
-        List<Certificate> certificates = certificateLogic.findCertificates(request);
+        certificateDao.addCertificate(certificate);
+        Map<String, String> params = new HashMap<>();
+        params.put("certificate_name", "TEST");
+        List<Certificate> certificates = certificateDao.findCertificates(params);
         Assertions.assertEquals(certificate.getCertificateName(), certificates.get(0).getCertificateName());
     }
 
     @Test
-    public void testDelete() throws LogicException {
+    public void testDelete() throws DaoException {
         Certificate certificate = getCertificate();
-        certificateLogic.addCertificate(certificate);
-        SearchCertificateRequest request = getRequest();
-        List<Certificate> certificates = certificateLogic.findCertificates(request);
+        certificateDao.addCertificate(certificate);
+        Map<String, String> params = new HashMap<>();
+        params.put("certificate_name", "TEST");
+        List<Certificate> certificates = certificateDao.findCertificates(params);
         Assertions.assertEquals("TEST", certificates.get(0).getCertificateName());
         int id = certificates.get(0).getGiftCertificateId();
-        DeleteByIdRequest request1 = new DeleteByIdRequest();
-        request1.setId(id);
-        certificateLogic.deleteCertificate(request1);
-        LogicException thrown = Assertions.assertThrows(LogicException.class,
-                () -> certificateLogic.findCertificates(new SearchCertificateRequest()));
+        certificateDao.deleteCertificate(id);
+        DaoException thrown = Assertions.assertThrows(DaoException.class, () -> certificateDao.findCertificates(params));
         Assertions.assertEquals("No certificates found", thrown.getMessage());
     }
 
     @Test
-    public void testUpdate() throws LogicException {
+    public void testUpdate() throws DaoException {
         Certificate certificate = getCertificate();
-        certificateLogic.addCertificate(certificate);
-        SearchCertificateRequest request = getRequest();
-        List<Certificate> certificates = certificateLogic.findCertificates(request);
+        certificateDao.addCertificate(certificate);
+        Map<String, String> params = new HashMap<>();
+        params.put("certificate_name", "TEST");
+        List<Certificate> certificates = certificateDao.findCertificates(params);
         Assertions.assertEquals("TEST", certificates.get(0).getCertificateName());
         int id = certificates.get(0).getGiftCertificateId();
-        UpdateCertificateRequest request1 = new UpdateCertificateRequest();
-        request1.setGiftCertificateId(id);
-        request1.setCertificateName("NEW_TEST");
-        certificateLogic.updateCertificate(request1);
-        Certificate newCertificate = certificateLogic.findCertificates(new SearchCertificateRequest()).get(0);
+        Map<String, String> updateParams = new HashMap<>();
+        updateParams.put("giftCertificateId", String.valueOf(id));
+        updateParams.put("certificate_name", "NEW_TEST");
+        certificateDao.updateCertificate(updateParams);
+        Certificate newCertificate = certificateDao.findCertificates(new HashMap<>()).get(0);
         Assertions.assertEquals("NEW_TEST", newCertificate.getCertificateName());
     }
 
@@ -111,11 +103,5 @@ class CertificateLogicImplTest {
         tags.add(tag);
         certificate.setTags(tags);
         return certificate;
-    }
-
-    public static SearchCertificateRequest getRequest() {
-        SearchCertificateRequest request = new SearchCertificateRequest();
-        request.setCertificateName("TEST");
-        return request;
     }
 }
