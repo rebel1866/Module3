@@ -11,7 +11,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[]{ControllerConfig.class, DaoConfigMySql.class};
+        return new Class[]{ControllerConfig.class};
     }
 
     @Override
