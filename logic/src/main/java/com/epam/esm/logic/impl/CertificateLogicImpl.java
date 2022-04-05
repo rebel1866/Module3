@@ -49,6 +49,19 @@ public class CertificateLogicImpl implements CertificateLogic {
         return certificates;
     }
 
+    // validation id в отдельный класс?
+    @Override
+    public Certificate findCertificateById(int id) throws LogicException {
+        if (id <= 0) {
+            throw new LogicException("Id must be positive integer number", "errorCode=3");
+        }
+        try {
+            return certificateDao.findCertificateById(id);
+        } catch (DaoException e) {
+            throw new LogicException(e.getMessage(), e.getErrorCode(), e);
+        }
+    }
+
     @Override
     public void addCertificate(Certificate certificate) throws LogicException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimePattern);

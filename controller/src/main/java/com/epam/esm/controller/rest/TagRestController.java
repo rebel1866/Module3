@@ -24,12 +24,21 @@ public class TagRestController {
     }
 
     @GetMapping(value = "/tags", consumes = {"application/json"}, produces = {"application/json"})
-    public List<Tag> showCertificates(@ModelAttribute @Valid SearchTagRequest request, BindingResult bindingResult)
+    public List<Tag> getCertificates(@ModelAttribute @Valid SearchTagRequest request, BindingResult bindingResult)
             throws RestControllerException {
         if (bindingResult.hasErrors())
             throw new RestControllerException("Wrong input data", "errorCode=3", bindingResult);
         try {
             return tagLogic.findTags(request);
+        } catch (LogicException e) {
+            throw new RestControllerException(e.getMessage(), e.getErrorCode(), e);
+        }
+    }
+
+    @GetMapping(value = "/tags/{id}", consumes = {"application/json"}, produces = {"application/json"})
+    public Tag getCertificateById(@PathVariable("id") int id) throws RestControllerException {
+        try {
+            return tagLogic.findTagById(id);
         } catch (LogicException e) {
             throw new RestControllerException(e.getMessage(), e.getErrorCode(), e);
         }

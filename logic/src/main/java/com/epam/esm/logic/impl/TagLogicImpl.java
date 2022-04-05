@@ -42,7 +42,19 @@ public class TagLogicImpl implements TagLogic {
             throw new LogicException(e.getMessage(), e.getErrorCode(), e);
         }
     }
-//findByID
+
+    @Override
+    public Tag findTagById(int id) throws LogicException {
+        if (id <= 0) {
+            throw new LogicException("Id must be positive integer number", "errorCode=3");
+        }
+        try {
+            return tagDao.findTagById(id);
+        } catch (DaoException e) {
+            throw new LogicException(e.getMessage(), e.getErrorCode(), e);
+        }
+    }
+
     @Override
     public void addTag(AddTagRequest request) throws LogicException {
         Tag tag = new Tag();

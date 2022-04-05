@@ -13,4 +13,6 @@ public interface TagLogic {
     void addTag(AddTagRequest request) throws LogicException;
 
     void deleteTag(int id) throws LogicException;
+
+    Tag findTagById(int id) throws LogicException;
 }

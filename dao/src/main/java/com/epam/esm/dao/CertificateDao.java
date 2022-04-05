@@ -13,4 +13,6 @@ public interface CertificateDao {
     void deleteCertificate(int id) throws DaoException;
 
     void updateCertificate(Map<String, String> params) throws DaoException;
+
+    Certificate findCertificateById(int id) throws DaoException;
 }

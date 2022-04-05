@@ -31,6 +31,7 @@ public class CertificateDaoImpl implements CertificateDao {
             "values ((select gift_certificate_id from gifts.gift_certificates order by gift_certificate_id desc limit 1),?)";
     private static final String removeCertificateSql = "delete from gifts.gift_certificates where gift_certificate_id = ?";
     private static final String updateSql = "update gifts.gift_certificates set where gift_certificate_id=?";
+    private static final String findByIdSql = "select * from gifts.gift_certificates where gift_certificate_id =?";
 
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
@@ -50,6 +51,16 @@ public class CertificateDaoImpl implements CertificateDao {
         }
         if (certificates.size() == 0) throw new DaoException("No certificates found", "errorCode=1");
         return certificates;
+    }
+
+    @Override
+    public Certificate findCertificateById(int id) throws DaoException {
+        List<Certificate> certificates = jdbcTemplate.query(findByIdSql, new CertificateMapper(), id);
+        if (certificates.size() != 0) {
+            return certificates.get(0);
+        } else {
+            throw new DaoException("No certificate found by given id", "errorCode=1");
+        }
     }
 
     @Override

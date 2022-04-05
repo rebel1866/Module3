@@ -15,4 +15,6 @@ public interface CertificateLogic {
     void deleteCertificate(int id) throws LogicException;
 
     void updateCertificate(UpdateCertificateRequest request) throws LogicException;
+
+    Certificate findCertificateById(int id) throws LogicException;
 }

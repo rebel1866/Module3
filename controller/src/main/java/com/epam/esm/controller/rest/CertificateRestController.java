@@ -24,14 +24,21 @@ public class CertificateRestController {
         this.certificateLogic = certificateLogic;
     }
 
-    //getCertificates !!! имя
     @GetMapping(value = "/certificates", consumes = {"application/json"}, produces = {"application/json"})
-    public List<Certificate> showCertificates(@ModelAttribute @Valid SearchCertificateRequest searchRequest,
-                                              BindingResult bindingResult) throws RestControllerException {
+    public List<Certificate> getCertificates(@ModelAttribute @Valid SearchCertificateRequest searchRequest,
+                                             BindingResult bindingResult) throws RestControllerException {
         if (bindingResult.hasErrors())
             throw new RestControllerException("Wrong input data", "errorCode=3", bindingResult);
         try {
             return certificateLogic.findCertificates(searchRequest);
+        } catch (LogicException e) {
+            throw new RestControllerException(e.getMessage(), e.getErrorCode(), e);
+        }
+    }
+    @GetMapping(value = "/certificates/{id}", consumes = {"application/json"}, produces = {"application/json"})
+    public Certificate getCertificateById(@PathVariable("id") int id) throws RestControllerException {
+        try {
+            return certificateLogic.findCertificateById(id);
         } catch (LogicException e) {
             throw new RestControllerException(e.getMessage(), e.getErrorCode(), e);
         }

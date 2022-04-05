@@ -12,4 +12,6 @@ public interface TagDao {
     void addTag(Tag tag) throws DaoException;
 
     void deleteTag(int id) throws DaoException;
+
+    Tag findTagById(int id) throws DaoException;
 }

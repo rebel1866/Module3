@@ -18,6 +18,7 @@ public class TagDaoImpl implements TagDao {
     private static final String tagSQL = "select tag_name, tag_id from tags";
     private static final String addTagSql = "insert into gifts.tags (tag_name) values (?)";
     private static final String deleteTagSql = "delete from gifts.tags where tag_id =?";
+    private static final String findByIdSql = "select * from tags where tag_id =?";
 
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
@@ -30,6 +31,16 @@ public class TagDaoImpl implements TagDao {
         List<Tag> tags = jdbcTemplate.query(targetSql, new TagMapper());
         if (tags.size() == 0) throw new DaoException("No tags found", "errorCode=1");
         return tags;
+    }
+
+    @Override
+    public Tag findTagById(int id) throws DaoException {
+        List<Tag> tags = jdbcTemplate.query(findByIdSql, new TagMapper(), id);
+        if (tags.size() != 0) {
+            return tags.get(0);
+        } else {
+            throw new DaoException("No tags found by given id", "errorCode=1");
+        }
     }
 
     @Override
