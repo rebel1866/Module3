@@ -1,5 +1,6 @@
 package com.epam.esm.controller.rest;
 
+import com.epam.esm.dto.AddCertificateRequest;
 import com.epam.esm.exception.RestControllerException;
 import com.epam.esm.dto.SearchCertificateRequest;
 import com.epam.esm.dto.UpdateCertificateRequest;
@@ -46,12 +47,12 @@ public class CertificateRestController {
 
     @PostMapping(value = "/certificates", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
-    public void addCertificate(@RequestBody @Valid Certificate certificate,
+    public void addCertificate(@RequestBody @Valid AddCertificateRequest request,
                                BindingResult bindingResult) throws RestControllerException {
         if (bindingResult.hasErrors())
             throw new RestControllerException("Wrong input data", "errorCode=3", bindingResult);
         try {
-            certificateLogic.addCertificate(certificate);
+            certificateLogic.addCertificate(request);
         } catch (LogicException e) {
             throw new RestControllerException(e.getMessage(), e.getErrorCode(), e);
         }

@@ -5,10 +5,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,18 +13,10 @@ import java.util.Objects;
 public class Certificate implements Serializable {
     private static final long SerialVersionUID = 5545654654564504L;
     private Integer giftCertificateId;
-    @NotBlank(message = "certificateName must be filled")
     private String certificateName;
-    @NotBlank(message = "description must be filled")
     private String description;
-    @Positive
-    @NotNull(message = "price must be filled")
     private Integer price;
-    @NotNull(message = "duration must be filled")
-    @Positive(message = "duration must be positive number")
     private Integer duration;
-    @Valid
-    @NotNull(message = "tags must be filled")
     private List<Tag> tags;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

@@ -1,5 +1,6 @@
 package com.epam.esm.controller.ui;
 
+import com.epam.esm.dto.AddCertificateRequest;
 import com.epam.esm.exception.UiControllerException;
 import com.epam.esm.dto.SearchCertificateRequest;
 import com.epam.esm.dto.SearchTagRequest;
@@ -80,7 +81,7 @@ public class CertificateController {
     }
 
     @RequestMapping(value = "/addCertificate", method = RequestMethod.POST)
-    public String addCertificate(@ModelAttribute @Valid Certificate certificate, BindingResult bindingResult, Model model)
+    public String addCertificate(@ModelAttribute @Valid AddCertificateRequest request, BindingResult bindingResult, Model model)
             throws UiControllerException {
         if (bindingResult.hasErrors()) {
             List<Tag> tags;
@@ -93,7 +94,7 @@ public class CertificateController {
             return "add-certificate";
         }
         try {
-            certificateLogic.addCertificate(certificate);
+            certificateLogic.addCertificate(request);
         } catch (LogicException e) {
             throw new UiControllerException(e.getMessage(), e);
         }

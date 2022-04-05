@@ -1,6 +1,7 @@
 package com.epam.esm;
 
 
+import com.epam.esm.dto.AddCertificateRequest;
 import com.epam.esm.entity.Certificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.dto.SearchCertificateRequest;
@@ -48,24 +49,24 @@ class CertificateLogicImplTest {
 
     @Test
     public void testAdd() {
-        Certificate certificate = getCertificate();
-        assertDoesNotThrow(() -> certificateLogic.addCertificate(certificate));
+        AddCertificateRequest requestAdd = getAddRequest();
+        assertDoesNotThrow(() -> certificateLogic.addCertificate(requestAdd));
     }
 
     @Test
     public void testFind() throws LogicException {
-        Certificate certificate = getCertificate();
-        certificateLogic.addCertificate(certificate);
+        AddCertificateRequest requestAdd = getAddRequest();
+        certificateLogic.addCertificate(requestAdd);
         SearchCertificateRequest request = new SearchCertificateRequest();
         request.setCertificateName("TEST");
         List<Certificate> certificates = certificateLogic.findCertificates(request);
-        Assertions.assertEquals(certificate.getCertificateName(), certificates.get(0).getCertificateName());
+        Assertions.assertEquals(requestAdd.getCertificateName(), certificates.get(0).getCertificateName());
     }
 
     @Test
     public void testDelete() throws LogicException {
-        Certificate certificate = getCertificate();
-        certificateLogic.addCertificate(certificate);
+        AddCertificateRequest requestAdd = getAddRequest();
+        certificateLogic.addCertificate(requestAdd);
         SearchCertificateRequest request = getRequest();
         List<Certificate> certificates = certificateLogic.findCertificates(request);
         Assertions.assertEquals("TEST", certificates.get(0).getCertificateName());
@@ -78,8 +79,8 @@ class CertificateLogicImplTest {
 
     @Test
     public void testUpdate() throws LogicException {
-        Certificate certificate = getCertificate();
-        certificateLogic.addCertificate(certificate);
+        AddCertificateRequest requestAdd = getAddRequest();
+        certificateLogic.addCertificate(requestAdd);
         SearchCertificateRequest request = getRequest();
         List<Certificate> certificates = certificateLogic.findCertificates(request);
         Assertions.assertEquals("TEST", certificates.get(0).getCertificateName());
@@ -97,17 +98,15 @@ class CertificateLogicImplTest {
         JdbcTestUtils.dropTables(jdbcTemplate, "gifts.cert_tags", "gifts.tags", "gifts.gift_certificates");
     }
 
-    public static Certificate getCertificate() {
-        Certificate certificate = new Certificate();
-        certificate.setCertificateName("TEST");
-        certificate.setLastUpdateTime(LocalDateTime.now());
-        certificate.setCreationDate(LocalDateTime.now());
+    public static AddCertificateRequest getAddRequest() {
+        AddCertificateRequest request = new AddCertificateRequest();
+        request.setCertificateName("TEST");
         Tag tag = new Tag();
         tag.setTagId(1);
         List<Tag> tags = new ArrayList<>();
         tags.add(tag);
-        certificate.setTags(tags);
-        return certificate;
+        request.setTags(tags);
+        return request;
     }
 
     public static SearchCertificateRequest getRequest() {

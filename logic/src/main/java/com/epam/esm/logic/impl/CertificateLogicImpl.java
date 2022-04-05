@@ -1,5 +1,7 @@
 package com.epam.esm.logic.impl;
 
+import com.epam.esm.converter.AddRequestToCertificateConverter;
+import com.epam.esm.dto.AddCertificateRequest;
 import com.epam.esm.dto.SearchCertificateRequest;
 import com.epam.esm.dto.UpdateCertificateRequest;
 import com.epam.esm.exception.DaoException;
@@ -63,7 +65,8 @@ public class CertificateLogicImpl implements CertificateLogic {
     }
 
     @Override
-    public void addCertificate(Certificate certificate) throws LogicException {
+    public void addCertificate(AddCertificateRequest request) throws LogicException {
+        Certificate certificate = AddRequestToCertificateConverter.convert(request);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimePattern);
         LocalDateTime now = LocalDateTime.parse(formatter.format(LocalDateTime.now()));
         certificate.setCreationDate(now);
