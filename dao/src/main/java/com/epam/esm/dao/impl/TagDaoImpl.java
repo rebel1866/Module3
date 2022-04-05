@@ -29,7 +29,9 @@ public class TagDaoImpl implements TagDao {
     public List<Tag> findTags(Map<String, String> params) throws DaoException {
         String targetSql = SqlGenerator.generateSQL(tagSQL, params);
         List<Tag> tags = jdbcTemplate.query(targetSql, new TagMapper());
-        if (tags.size() == 0) throw new DaoException("No tags found", "errorCode=1");
+        if (tags.size() == 0) {
+            throw new DaoException("No tags found", "errorCode=1");
+        }
         return tags;
     }
 
@@ -46,12 +48,16 @@ public class TagDaoImpl implements TagDao {
     @Override
     public void addTag(Tag tag) throws DaoException {
         int rowsAffected = jdbcTemplate.update(addTagSql, tag.getTagName());
-        if (rowsAffected == 0) throw new DaoException("Tag has not been added", "errorCode=2");
+        if (rowsAffected == 0) {
+            throw new DaoException("Tag has not been added", "errorCode=2");
+        }
     }
 
     @Override
     public void deleteTag(int id) throws DaoException {
         int rowsAffected = jdbcTemplate.update(deleteTagSql, id);
-        if (rowsAffected == 0) throw new DaoException("Tag has not been deleted", "errorCode=2");
+        if (rowsAffected == 0) {
+            throw new DaoException("Tag has not been deleted", "errorCode=2");
+        }
     }
 }

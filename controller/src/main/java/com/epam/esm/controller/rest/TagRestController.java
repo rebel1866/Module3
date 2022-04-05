@@ -26,8 +26,9 @@ public class TagRestController {
     @GetMapping(value = "/tags", consumes = {"application/json"}, produces = {"application/json"})
     public List<Tag> getCertificates(@ModelAttribute @Valid SearchTagRequest request, BindingResult bindingResult)
             throws RestControllerException, LogicException {
-        if (bindingResult.hasErrors())
+        if (bindingResult.hasErrors()) {
             throw new RestControllerException("Wrong input data", "errorCode=3", bindingResult);
+        }
         return tagLogic.findTags(request);
     }
 
@@ -40,8 +41,9 @@ public class TagRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public void addCertificate(@RequestBody @Valid AddTagRequest request, BindingResult bindingResult)
             throws RestControllerException, LogicException {
-        if (bindingResult.hasErrors())
+        if (bindingResult.hasErrors()) {
             throw new RestControllerException("Wrong input data", "errorCode=3", bindingResult);
+        }
         tagLogic.addTag(request);
     }
 

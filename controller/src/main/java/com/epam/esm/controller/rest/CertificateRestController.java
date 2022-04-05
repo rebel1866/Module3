@@ -28,8 +28,9 @@ public class CertificateRestController {
     @GetMapping(value = "/certificates", consumes = {"application/json"}, produces = {"application/json"})
     public List<Certificate> getCertificates(@ModelAttribute @Valid SearchCertificateRequest searchRequest,
                                              BindingResult bindingResult) throws RestControllerException, LogicException {
-        if (bindingResult.hasErrors())
+        if (bindingResult.hasErrors()) {
             throw new RestControllerException("Wrong input data", "errorCode=3", bindingResult);
+        }
         return certificateLogic.findCertificates(searchRequest);
     }
 
@@ -42,8 +43,9 @@ public class CertificateRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public void addCertificate(@RequestBody @Valid AddCertificateRequest request,
                                BindingResult bindingResult) throws RestControllerException, LogicException {
-        if (bindingResult.hasErrors())
+        if (bindingResult.hasErrors()) {
             throw new RestControllerException("Wrong input data", "errorCode=3", bindingResult);
+        }
         certificateLogic.addCertificate(request);
     }
 

@@ -37,13 +37,19 @@ public class SqlGenerator {
     }
 
     private static String addOrderBlock(String targetSql, String sorting, String sortingOrder) {
-        if (sorting != null) return targetSql + " order by " + sorting + " " + sortingOrder;
-        else return targetSql;
+        if (sorting != null) {
+            return targetSql + " order by " + sorting + " " + sortingOrder;
+        }
+        else {
+            return targetSql;
+        }
     }
 
 
     private static String addWhereBlock(StringBuilder sourceSql, Map<String, String> params) {
-        if (params.size() == 0) return sourceSql.toString();
+        if (params.size() == 0) {
+            return sourceSql.toString();
+        }
         Set<Map.Entry<String, String>> entries = params.entrySet();
         Iterator<Map.Entry<String, String>> iterator = entries.iterator();
         sourceSql.append(" where ");
@@ -56,7 +62,9 @@ public class SqlGenerator {
             }
             Action action = actions.get(key);
             action.doAction(sourceSql, key, value);
-            if (iterator.hasNext()) sourceSql.append(" and ");
+            if (iterator.hasNext()) {
+                sourceSql.append(" and ");
+            }
         }
         return sourceSql.toString();
     }
@@ -78,7 +86,9 @@ public class SqlGenerator {
             } else {
                 sqlSetPart.append(key).append("=").append(value);
             }
-            if (iterator.hasNext()) sqlSetPart.append(", ");
+            if (iterator.hasNext()) {
+                sqlSetPart.append(", ");
+            }
         }
         int insertIndex = 35;
         sqlSetPart.append(" ");

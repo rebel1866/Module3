@@ -12,7 +12,9 @@ public class EncodingFilter extends HttpFilter {
 
     public void init(FilterConfig config) throws ServletException {
         encoding = config.getInitParameter(encodingKey);
-        if (encoding == null) encoding = "UTF-8";
+        if (encoding == null) {
+            encoding = "UTF-8";
+        }
     }
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain next)
