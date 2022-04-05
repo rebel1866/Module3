@@ -5,7 +5,7 @@ import com.epam.esm.logic.dto.SearchCertificateRequest;
 import com.epam.esm.logic.dto.UpdateCertificateRequest;
 import com.epam.esm.dao.exceptions.DaoException;
 import com.epam.esm.dao.interfaces.CertificateDao;
-import com.epam.esm.entity.Certificate;
+import com.epam.esm.dao.entity.Certificate;
 import com.epam.esm.logic.exceptions.LogicException;
 import com.epam.esm.logic.interfaces.CertificateLogic;
 import com.epam.esm.logic.logicutils.ObjectToMapConverter;

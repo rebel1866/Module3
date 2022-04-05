@@ -1,7 +1,7 @@
 package com.epam.esm.dao.interfaces;
 
 import com.epam.esm.dao.exceptions.DaoException;
-import com.epam.esm.entity.Certificate;
+import com.epam.esm.dao.entity.Certificate;
 
 import java.util.List;
 import java.util.Map;

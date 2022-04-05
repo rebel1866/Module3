@@ -1,4 +1,4 @@
-package com.epam.esm.entity;
+package com.epam.esm.dao.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

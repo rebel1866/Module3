@@ -2,7 +2,7 @@ package com.epam.esm.controller.controllers.ui;
 
 import com.epam.esm.logic.dto.SearchTagRequest;
 import com.epam.esm.controller.exceptions.UiControllerException;
-import com.epam.esm.entity.Tag;
+import com.epam.esm.dao.entity.Tag;
 import com.epam.esm.logic.exceptions.LogicException;
 import com.epam.esm.logic.interfaces.TagLogic;
 import org.springframework.beans.factory.annotation.Autowired;

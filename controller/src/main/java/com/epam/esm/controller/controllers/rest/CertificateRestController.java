@@ -4,7 +4,7 @@ import com.epam.esm.logic.dto.DeleteByIdRequest;
 import com.epam.esm.logic.dto.SearchCertificateRequest;
 import com.epam.esm.logic.dto.UpdateCertificateRequest;
 import com.epam.esm.controller.exceptions.RestControllerException;
-import com.epam.esm.entity.Certificate;
+import com.epam.esm.dao.entity.Certificate;
 import com.epam.esm.logic.exceptions.LogicException;
 import com.epam.esm.logic.interfaces.CertificateLogic;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class CertificateRestController {
         this.certificateLogic = certificateLogic;
     }
 
-
+    //getCertificates !!! имя
     @GetMapping(value = "/certificates", consumes = {"application/json"}, produces = {"application/json"})
     public List<Certificate> showCertificates(@ModelAttribute @Valid SearchCertificateRequest searchRequest,
                                               BindingResult bindingResult) throws RestControllerException {
@@ -51,6 +51,7 @@ public class CertificateRestController {
         }
     }
 
+    //id path variable везде
     @DeleteMapping(value = "/certificates", consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<HttpStatus> deleteCertificate(@ModelAttribute @Valid DeleteByIdRequest request,
                                                         BindingResult bindingResult) throws RestControllerException {
@@ -64,10 +65,13 @@ public class CertificateRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    //id отдельно. убрать из dto. в path variable
     @PutMapping(value = "/certificates", consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<HttpStatus> updateCertificate(@RequestBody @Valid UpdateCertificateRequest request,
                                                         BindingResult result) throws RestControllerException {
-        if (result.hasErrors()) throw new RestControllerException("Wrong input data", "errorCode=3", result);
+        if (result.hasErrors()) {
+            throw new RestControllerException("Wrong input data", "errorCode=3", result);
+        }
         try {
             certificateLogic.updateCertificate(request);
         } catch (LogicException e) {

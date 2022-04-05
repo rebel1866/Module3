@@ -4,13 +4,12 @@ import com.epam.esm.logic.dto.AddTagRequest;
 import com.epam.esm.logic.dto.DeleteByIdRequest;
 import com.epam.esm.logic.dto.SearchTagRequest;
 import com.epam.esm.controller.exceptions.RestControllerException;
-import com.epam.esm.entity.Tag;
+import com.epam.esm.dao.entity.Tag;
 import com.epam.esm.logic.exceptions.LogicException;
 import com.epam.esm.logic.interfaces.TagLogic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

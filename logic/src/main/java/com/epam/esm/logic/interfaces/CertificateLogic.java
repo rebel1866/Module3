@@ -3,7 +3,7 @@ package com.epam.esm.logic.interfaces;
 import com.epam.esm.logic.dto.DeleteByIdRequest;
 import com.epam.esm.logic.dto.SearchCertificateRequest;
 import com.epam.esm.logic.dto.UpdateCertificateRequest;
-import com.epam.esm.entity.Certificate;
+import com.epam.esm.dao.entity.Certificate;
 import com.epam.esm.logic.exceptions.LogicException;
 
 import java.util.List;

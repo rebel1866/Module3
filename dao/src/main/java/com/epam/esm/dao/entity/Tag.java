@@ -1,4 +1,4 @@
-package com.epam.esm.entity;
+package com.epam.esm.dao.entity;
 
 import javax.validation.constraints.Positive;
 import java.io.Serializable;

@@ -1,8 +1,8 @@
 package com.epam.esm;
 
 
-import com.epam.esm.entity.Certificate;
-import com.epam.esm.entity.Tag;
+import com.epam.esm.dao.entity.Certificate;
+import com.epam.esm.dao.entity.Tag;
 import com.epam.esm.logic.dto.DeleteByIdRequest;
 import com.epam.esm.logic.dto.SearchCertificateRequest;
 import com.epam.esm.logic.dto.UpdateCertificateRequest;

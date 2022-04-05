@@ -5,7 +5,7 @@ import com.epam.esm.logic.dto.DeleteByIdRequest;
 import com.epam.esm.logic.dto.SearchTagRequest;
 import com.epam.esm.dao.exceptions.DaoException;
 import com.epam.esm.dao.interfaces.TagDao;
-import com.epam.esm.entity.Tag;
+import com.epam.esm.dao.entity.Tag;
 import com.epam.esm.logic.exceptions.LogicException;
 import com.epam.esm.logic.interfaces.TagLogic;
 import com.epam.esm.logic.logicutils.ObjectToMapConverter;
@@ -43,11 +43,11 @@ public class TagLogicImpl implements TagLogic {
             throw new LogicException(e.getMessage(), e.getErrorCode(), e);
         }
     }
-
+//findByID
     @Override
     public void addTag(AddTagRequest request) throws LogicException {
         Tag tag = new Tag();
-        tag.setTagName(request.getTagName());
+        tag.setTagName(request.getTagName());//converter
         try {
             tagDao.addTag(tag);
         } catch (DaoException e) {
