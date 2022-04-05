@@ -1,6 +1,7 @@
 package com.epam.esm.errorhandler;
 
 
+import com.epam.esm.exception.LogicException;
 import com.epam.esm.exception.RestControllerException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class ErrorHandler extends ResponseEntityExceptionHandler {
     private final static Map<String, HttpStatus> codesAndStatuses = new HashMap<>();
+    private String defaultResponse = "Error has occurred";
 
     static {
         codesAndStatuses.put("errorCode=1", HttpStatus.NOT_FOUND);
@@ -28,7 +30,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
 
 
     @ExceptionHandler(RestControllerException.class)
-    public ResponseEntity<String> handleCustomException(RestControllerException resException) {
+    public ResponseEntity<String> handleControllerException(RestControllerException resException) {
         HttpStatus status = codesAndStatuses.get(resException.getErrorCode());
         Errors errors = resException.getErrors();
         StringBuilder causeMessage;
@@ -44,14 +46,27 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
         }
         ErrorMessage errorMessage = new ErrorMessage(resException.getMessage(), resException.getErrorCode(),
                 status, causeMessage.toString());
-        String response = "Error has occurred";
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            response = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(errorMessage);
+            defaultResponse = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(errorMessage);
         } catch (IOException e) {
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(defaultResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(response, status);
+        return new ResponseEntity<>(defaultResponse, status);
+    }
+
+    @ExceptionHandler(LogicException.class)
+    public ResponseEntity<String> handleLogicException(LogicException logicException) {
+        HttpStatus status = codesAndStatuses.get(logicException.getErrorCode());
+        ErrorMessage errorMessage = new ErrorMessage(logicException.getMessage(), logicException.getErrorCode(),
+                status, logicException.getMessage());
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            defaultResponse = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(errorMessage);
+        } catch (IOException e) {
+            return new ResponseEntity<>(defaultResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(defaultResponse, status);
     }
 
     static class ErrorMessage {

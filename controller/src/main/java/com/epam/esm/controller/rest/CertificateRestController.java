@@ -27,59 +27,40 @@ public class CertificateRestController {
 
     @GetMapping(value = "/certificates", consumes = {"application/json"}, produces = {"application/json"})
     public List<Certificate> getCertificates(@ModelAttribute @Valid SearchCertificateRequest searchRequest,
-                                             BindingResult bindingResult) throws RestControllerException {
+                                             BindingResult bindingResult) throws RestControllerException, LogicException {
         if (bindingResult.hasErrors())
             throw new RestControllerException("Wrong input data", "errorCode=3", bindingResult);
-        try {
-            return certificateLogic.findCertificates(searchRequest);
-        } catch (LogicException e) {
-            throw new RestControllerException(e.getMessage(), e.getErrorCode(), e);
-        }
+        return certificateLogic.findCertificates(searchRequest);
     }
+
     @GetMapping(value = "/certificates/{id}", consumes = {"application/json"}, produces = {"application/json"})
-    public Certificate getCertificateById(@PathVariable("id") int id) throws RestControllerException {
-        try {
-            return certificateLogic.findCertificateById(id);
-        } catch (LogicException e) {
-            throw new RestControllerException(e.getMessage(), e.getErrorCode(), e);
-        }
+    public Certificate getCertificateById(@PathVariable("id") int id) throws LogicException {
+        return certificateLogic.findCertificateById(id);
     }
 
     @PostMapping(value = "/certificates", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
     public void addCertificate(@RequestBody @Valid AddCertificateRequest request,
-                               BindingResult bindingResult) throws RestControllerException {
+                               BindingResult bindingResult) throws RestControllerException, LogicException {
         if (bindingResult.hasErrors())
             throw new RestControllerException("Wrong input data", "errorCode=3", bindingResult);
-        try {
-            certificateLogic.addCertificate(request);
-        } catch (LogicException e) {
-            throw new RestControllerException(e.getMessage(), e.getErrorCode(), e);
-        }
+        certificateLogic.addCertificate(request);
     }
 
     @DeleteMapping(value = "/certificates/{id}", consumes = {"application/json"}, produces = {"application/json"})
-    public ResponseEntity<HttpStatus> deleteCertificate(@PathVariable("id") int id) throws RestControllerException {
-        try {
-            certificateLogic.deleteCertificate(id);
-        } catch (LogicException e) {
-            throw new RestControllerException(e.getMessage(), e.getErrorCode(), e);
-        }
+    public ResponseEntity<HttpStatus> deleteCertificate(@PathVariable("id") int id) throws LogicException {
+        certificateLogic.deleteCertificate(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     //id отдельно. убрать из dto. в path variable
     @PutMapping(value = "/certificates", consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<HttpStatus> updateCertificate(@RequestBody @Valid UpdateCertificateRequest request,
-                                                        BindingResult result) throws RestControllerException {
+                                                        BindingResult result) throws RestControllerException, LogicException {
         if (result.hasErrors()) {
             throw new RestControllerException("Wrong input data", "errorCode=3", result);
         }
-        try {
-            certificateLogic.updateCertificate(request);
-        } catch (LogicException e) {
-            throw new RestControllerException(e.getMessage(), e.getErrorCode(), e);
-        }
+        certificateLogic.updateCertificate(request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

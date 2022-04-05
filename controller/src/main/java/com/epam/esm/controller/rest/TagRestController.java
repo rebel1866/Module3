@@ -25,45 +25,29 @@ public class TagRestController {
 
     @GetMapping(value = "/tags", consumes = {"application/json"}, produces = {"application/json"})
     public List<Tag> getCertificates(@ModelAttribute @Valid SearchTagRequest request, BindingResult bindingResult)
-            throws RestControllerException {
+            throws RestControllerException, LogicException {
         if (bindingResult.hasErrors())
             throw new RestControllerException("Wrong input data", "errorCode=3", bindingResult);
-        try {
-            return tagLogic.findTags(request);
-        } catch (LogicException e) {
-            throw new RestControllerException(e.getMessage(), e.getErrorCode(), e);
-        }
+        return tagLogic.findTags(request);
     }
 
     @GetMapping(value = "/tags/{id}", consumes = {"application/json"}, produces = {"application/json"})
-    public Tag getCertificateById(@PathVariable("id") int id) throws RestControllerException {
-        try {
-            return tagLogic.findTagById(id);
-        } catch (LogicException e) {
-            throw new RestControllerException(e.getMessage(), e.getErrorCode(), e);
-        }
+    public Tag getCertificateById(@PathVariable("id") int id) throws LogicException {
+        return tagLogic.findTagById(id);
     }
 
     @PostMapping(value = "/tags", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
     public void addCertificate(@RequestBody @Valid AddTagRequest request, BindingResult bindingResult)
-            throws RestControllerException {
+            throws RestControllerException, LogicException {
         if (bindingResult.hasErrors())
             throw new RestControllerException("Wrong input data", "errorCode=3", bindingResult);
-        try {
-            tagLogic.addTag(request);
-        } catch (LogicException e) {
-            throw new RestControllerException(e.getMessage(), e.getErrorCode(), e);
-        }
+        tagLogic.addTag(request);
     }
 
     @DeleteMapping(value = "/tags/{id}", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
-    public void deleteTag(@PathVariable("id") int id) throws RestControllerException {
-        try {
-            tagLogic.deleteTag(id);
-        } catch (LogicException e) {
-            throw new RestControllerException(e.getMessage(), e.getErrorCode(), e);
-        }
+    public void deleteTag(@PathVariable("id") int id) throws LogicException {
+        tagLogic.deleteTag(id);
     }
 }
