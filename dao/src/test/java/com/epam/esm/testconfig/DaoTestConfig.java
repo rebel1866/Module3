@@ -1,4 +1,4 @@
-package com.epam.esm.impl.testconfig;
+package com.epam.esm.testconfig;
 
 
 import org.apache.commons.dbcp.BasicDataSource;

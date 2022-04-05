@@ -1,4 +1,4 @@
-package com.epam.esm.interfaces;
+package com.epam.esm.dao;
 
 import com.epam.esm.exception.DaoException;
 import com.epam.esm.entity.Tag;

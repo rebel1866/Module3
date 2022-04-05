@@ -1,7 +1,7 @@
-package com.epam.esm.impl;
+package com.epam.esm.dao.impl;
 
 import com.epam.esm.exception.DaoException;
-import com.epam.esm.interfaces.CertificateDao;
+import com.epam.esm.dao.CertificateDao;
 import com.epam.esm.mapper.CertificateMapper;
 import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.sqlgenerator.SqlGenerator;

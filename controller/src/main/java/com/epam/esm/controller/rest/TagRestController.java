@@ -6,7 +6,7 @@ import com.epam.esm.dto.SearchTagRequest;
 import com.epam.esm.exception.RestControllerException;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.LogicException;
-import com.epam.esm.interfaces.TagLogic;
+import com.epam.esm.logic.TagLogic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;

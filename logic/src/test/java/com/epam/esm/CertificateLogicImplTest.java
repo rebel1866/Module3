@@ -7,7 +7,7 @@ import com.epam.esm.dto.DeleteByIdRequest;
 import com.epam.esm.dto.SearchCertificateRequest;
 import com.epam.esm.dto.UpdateCertificateRequest;
 import com.epam.esm.exception.LogicException;
-import com.epam.esm.interfaces.CertificateLogic;
+import com.epam.esm.logic.CertificateLogic;
 import com.epam.esm.testconfig.LogicTestConfig;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;

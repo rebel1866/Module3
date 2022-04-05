@@ -4,7 +4,7 @@ import com.epam.esm.exception.UiControllerException;
 import com.epam.esm.dto.SearchTagRequest;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.LogicException;
-import com.epam.esm.interfaces.TagLogic;
+import com.epam.esm.logic.TagLogic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

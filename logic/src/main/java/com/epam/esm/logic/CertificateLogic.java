@@ -1,4 +1,4 @@
-package com.epam.esm.interfaces;
+package com.epam.esm.logic;
 
 import com.epam.esm.dto.SearchCertificateRequest;
 import com.epam.esm.dto.UpdateCertificateRequest;

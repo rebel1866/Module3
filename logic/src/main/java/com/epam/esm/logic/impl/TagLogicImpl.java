@@ -1,14 +1,14 @@
-package com.epam.esm.impl;
+package com.epam.esm.logic.impl;
 
 import com.epam.esm.dto.AddTagRequest;
 import com.epam.esm.dto.DeleteByIdRequest;
 import com.epam.esm.dto.SearchTagRequest;
 import com.epam.esm.exception.DaoException;
-import com.epam.esm.interfaces.TagDao;
+import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.LogicException;
-import com.epam.esm.interfaces.TagLogic;
-import com.epam.esm.logicutils.ObjectToMapConverter;
+import com.epam.esm.logic.TagLogic;
+import com.epam.esm.converter.ObjectToMapConverter;
 import com.google.common.base.CaseFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

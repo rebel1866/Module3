@@ -12,7 +12,6 @@
         <module>controller</module>
         <module>dao</module>
         <module>logic</module>
-        <module>entity</module>
         <module>webapplication</module>
     </modules>
 

@@ -6,7 +6,7 @@ import com.epam.esm.dto.SearchCertificateRequest;
 import com.epam.esm.dto.UpdateCertificateRequest;
 import com.epam.esm.entity.Certificate;
 import com.epam.esm.exception.LogicException;
-import com.epam.esm.interfaces.CertificateLogic;
+import com.epam.esm.logic.CertificateLogic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

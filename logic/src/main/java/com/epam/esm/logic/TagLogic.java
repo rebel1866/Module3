@@ -1,4 +1,4 @@
-package com.epam.esm.interfaces;
+package com.epam.esm.logic;
 
 import com.epam.esm.dto.AddTagRequest;
 import com.epam.esm.dto.DeleteByIdRequest;

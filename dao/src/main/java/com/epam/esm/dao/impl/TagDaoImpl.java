@@ -1,7 +1,7 @@
-package com.epam.esm.impl;
+package com.epam.esm.dao.impl;
 
 import com.epam.esm.exception.DaoException;
-import com.epam.esm.interfaces.TagDao;
+import com.epam.esm.dao.TagDao;
 import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.sqlgenerator.SqlGenerator;
 import com.epam.esm.entity.Tag;

@@ -1,4 +1,4 @@
-package com.epam.esm.logicutils;
+package com.epam.esm.converter;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
