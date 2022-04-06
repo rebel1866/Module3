@@ -1,12 +1,10 @@
 package com.epam.esm.entity;
 
-import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class Tag implements Serializable {
     private static final long SerialVersionUID = 654654654564545L;
-    @Positive
     private int tagId;
     private String tagName;
 
