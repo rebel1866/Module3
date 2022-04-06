@@ -1,18 +1,17 @@
 package com.epam.esm.logic;
 
-import com.epam.esm.dto.AddTagRequest;
-import com.epam.esm.dto.SearchTagRequest;
-import com.epam.esm.entity.Tag;
+import com.epam.esm.converter.SearchTagRequest;
+import com.epam.esm.dto.TagDto;
 import com.epam.esm.exception.LogicException;
 
 import java.util.List;
 
 public interface TagLogic {
-    List<Tag> findTags(SearchTagRequest request) throws LogicException;
+    List<TagDto> findTags(SearchTagRequest request) throws LogicException;
 
-    void addTag(AddTagRequest request) throws LogicException;
+    TagDto addTag(String tagName) throws LogicException;
 
     void deleteTag(int id) throws LogicException;
 
-    Tag findTagById(int id) throws LogicException;
+    TagDto findTagById(int id) throws LogicException;
 }

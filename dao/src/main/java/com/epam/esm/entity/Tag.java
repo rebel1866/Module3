@@ -10,6 +10,10 @@ public class Tag implements Serializable {
     private int tagId;
     private String tagName;
 
+    public Tag(String tagName) {
+        this.tagName = tagName;
+    }
+
     public int getTagId() {
         return tagId;
     }

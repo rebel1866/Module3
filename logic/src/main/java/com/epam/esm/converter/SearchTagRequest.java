@@ -1,4 +1,4 @@
-package com.epam.esm.dto;
+package com.epam.esm.converter;
 
 import javax.validation.constraints.Pattern;
 

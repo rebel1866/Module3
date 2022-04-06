@@ -8,9 +8,11 @@ import com.epam.esm.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Repository
 public class TagDaoImpl implements TagDao {
@@ -18,7 +20,8 @@ public class TagDaoImpl implements TagDao {
     private static final String tagSQL = "select tag_name, tag_id from tags";
     private static final String addTagSql = "insert into gifts.tags (tag_name) values (?)";
     private static final String deleteTagSql = "delete from gifts.tags where tag_id =?";
-    private static final String findByIdSql = "select * from tags where tag_id =?";
+    private static final String findByIdSql = "select * from gifts.tags where tag_id =?";
+    private static final String lastIdSql = "select max(tag_id) as max from gifts.tags";
 
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
@@ -46,11 +49,14 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public void addTag(Tag tag) throws DaoException {
+    @Transactional
+    public Tag addTag(Tag tag) throws DaoException {
         int rowsAffected = jdbcTemplate.update(addTagSql, tag.getTagName());
         if (rowsAffected == 0) {
             throw new DaoException("Tag has not been added", "errorCode=2");
         }
+        int id = getLastId();
+        return findTagById(id);
     }
 
     @Override
@@ -59,5 +65,9 @@ public class TagDaoImpl implements TagDao {
         if (rowsAffected == 0) {
             throw new DaoException("Tag has not been deleted", "errorCode=2");
         }
+    }
+    private int getLastId() {
+        Integer value = jdbcTemplate.queryForObject(lastIdSql, Integer.class);
+        return Objects.requireNonNullElse(value, 0);
     }
 }

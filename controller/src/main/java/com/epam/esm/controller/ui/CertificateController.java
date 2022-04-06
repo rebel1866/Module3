@@ -1,11 +1,11 @@
 package com.epam.esm.controller.ui;
 
+import com.epam.esm.converter.SearchTagRequest;
 import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.exception.UiControllerException;
 import com.epam.esm.dto.SearchCertificateRequest;
-import com.epam.esm.dto.SearchTagRequest;
+import com.epam.esm.dto.TagDto;
 import com.epam.esm.entity.Certificate;
-import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.LogicException;
 import com.epam.esm.logic.CertificateLogic;
 import com.epam.esm.logic.TagLogic;
@@ -69,7 +69,7 @@ public class CertificateController {
 
     @RequestMapping(value = "/add-certificate-form")
     public String showAddCertificateForm(Model model) throws UiControllerException {
-        List<Tag> tags;
+        List<TagDto> tags;
         try {
             tags = tagLogic.findTags(new SearchTagRequest());
         } catch (LogicException e) {
@@ -84,7 +84,7 @@ public class CertificateController {
     public String addCertificate(@ModelAttribute @Valid CertificateDto request, BindingResult bindingResult, Model model)
             throws UiControllerException {
         if (bindingResult.hasErrors()) {
-            List<Tag> tags;
+            List<TagDto> tags;
             try {
                 tags = tagLogic.findTags(new SearchTagRequest());
             } catch (LogicException e) {

@@ -1,8 +1,8 @@
 package com.epam.esm.controller.ui;
 
+import com.epam.esm.converter.SearchTagRequest;
 import com.epam.esm.exception.UiControllerException;
-import com.epam.esm.dto.SearchTagRequest;
-import com.epam.esm.entity.Tag;
+import com.epam.esm.dto.TagDto;
 import com.epam.esm.exception.LogicException;
 import com.epam.esm.logic.TagLogic;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +24,8 @@ public class TagController {
     }
 
     @RequestMapping(value = "/tags", method = {RequestMethod.GET, RequestMethod.POST})
-    public String showTags(@ModelAttribute SearchTagRequest request, Model model) throws UiControllerException {
-        List<Tag> tags;
+    public String getTags(@ModelAttribute SearchTagRequest request, Model model) throws UiControllerException {
+        List<TagDto> tags;
         try {
             tags = tagLogic.findTags(request);
         } catch (LogicException e) {

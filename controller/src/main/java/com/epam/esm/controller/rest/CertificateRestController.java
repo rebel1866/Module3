@@ -54,7 +54,6 @@ public class CertificateRestController {
         certificateLogic.deleteCertificate(id);
     }
 
-    //id отдельно. убрать из dto. в path variable
     @PutMapping(value = "/certificates/{id}", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
     public CertificateDto updateCertificate(@PathVariable("id") int id, @RequestBody @Valid

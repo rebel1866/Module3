@@ -1,7 +1,8 @@
 package com.epam.esm.logic.impl;
 
-import com.epam.esm.dto.AddTagRequest;
-import com.epam.esm.dto.SearchTagRequest;
+import com.epam.esm.converter.SearchTagRequest;
+import com.epam.esm.converter.TagEntityToDtoConverter;
+import com.epam.esm.dto.TagDto;
 import com.epam.esm.exception.DaoException;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.Tag;
@@ -26,7 +27,7 @@ public class TagLogicImpl implements TagLogic {
     }
 
     @Override
-    public List<Tag> findTags(SearchTagRequest request) throws LogicException {
+    public List<TagDto> findTags(SearchTagRequest request) throws LogicException {
         Map<String, String> params = ObjectToMapConverter.convertToMap(request);
         var iterator = params.entrySet().iterator();
         Map<String, String> newParams = new HashMap<>();
@@ -36,34 +37,39 @@ public class TagLogicImpl implements TagLogic {
             String value = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, String.valueOf(el.getValue()));
             newParams.put(key, value);
         }
+        List<Tag> tags;
         try {
-            return tagDao.findTags(newParams);
+            tags = tagDao.findTags(newParams);
         } catch (DaoException e) {
             throw new LogicException(e.getMessage(), e.getErrorCode(), e);
         }
+        return TagEntityToDtoConverter.convertList(tags);
     }
 
     @Override
-    public Tag findTagById(int id) throws LogicException {
+    public TagDto findTagById(int id) throws LogicException {
         if (id <= 0) {
             throw new LogicException("Id must be positive integer number", "errorCode=3");
         }
+        Tag tag;
         try {
-            return tagDao.findTagById(id);
+            tag = tagDao.findTagById(id);
         } catch (DaoException e) {
             throw new LogicException(e.getMessage(), e.getErrorCode(), e);
         }
+        return TagEntityToDtoConverter.convert(tag);
     }
 
     @Override
-    public void addTag(AddTagRequest request) throws LogicException {
-        Tag tag = new Tag();
-        tag.setTagName(request.getTagName());//converter
+    public TagDto addTag(String tagName) throws LogicException {
+        Tag tag = new Tag(tagName);
+        Tag addedTag;
         try {
-            tagDao.addTag(tag);
+            addedTag = tagDao.addTag(tag);
         } catch (DaoException e) {
             throw new LogicException(e.getMessage(), e.getErrorCode(), e);
         }
+        return TagEntityToDtoConverter.convert(addedTag);
     }
 
     @Override
