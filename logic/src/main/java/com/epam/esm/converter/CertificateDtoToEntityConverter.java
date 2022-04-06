@@ -1,10 +1,10 @@
 package com.epam.esm.converter;
 
-import com.epam.esm.dto.AddCertificateRequest;
+import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.entity.Certificate;
 
-public class AddRequestToCertificateConverter {
-    public static Certificate convert(AddCertificateRequest request){
+public class CertificateDtoToEntityConverter {
+    public static Certificate convert(CertificateDto request){
         Certificate certificate = new Certificate();
         certificate.setCertificateName(request.getCertificateName());
         certificate.setPrice(request.getPrice());

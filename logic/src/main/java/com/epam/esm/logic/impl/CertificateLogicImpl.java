@@ -1,7 +1,8 @@
 package com.epam.esm.logic.impl;
 
-import com.epam.esm.converter.AddRequestToCertificateConverter;
-import com.epam.esm.dto.AddCertificateRequest;
+import com.epam.esm.converter.CertificateDtoToEntityConverter;
+import com.epam.esm.converter.CertificateEntityToDtoConverter;
+import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.SearchCertificateRequest;
 import com.epam.esm.dto.UpdateCertificateRequest;
 import com.epam.esm.exception.DaoException;
@@ -32,7 +33,7 @@ public class CertificateLogicImpl implements CertificateLogic {
     }
 
     @Override
-    public List<Certificate> findCertificates(SearchCertificateRequest request) throws LogicException {
+    public List<CertificateDto> findCertificates(SearchCertificateRequest request) throws LogicException {
         Map<String, String> params = ObjectToMapConverter.convertToMap(request);
         var iterator = params.entrySet().iterator();
         Map<String, String> newParams = new HashMap<>();
@@ -48,34 +49,37 @@ public class CertificateLogicImpl implements CertificateLogic {
         } catch (DaoException e) {
             throw new LogicException(e.getMessage(), e.getErrorCode(), e);
         }
-        return certificates;
+        return CertificateEntityToDtoConverter.convertList(certificates);
     }
 
     // validation id в отдельный класс?
     @Override
-    public Certificate findCertificateById(int id) throws LogicException {
+    public CertificateDto findCertificateById(int id) throws LogicException {
         if (id <= 0) {
             throw new LogicException("Id must be positive integer number", "errorCode=3");
         }
         try {
-            return certificateDao.findCertificateById(id);
+            Certificate certificate = certificateDao.findCertificateById(id);
+            return CertificateEntityToDtoConverter.convert(certificate);
         } catch (DaoException e) {
             throw new LogicException(e.getMessage(), e.getErrorCode(), e);
         }
     }
 
     @Override
-    public void addCertificate(AddCertificateRequest request) throws LogicException {
-        Certificate certificate = AddRequestToCertificateConverter.convert(request);
+    public CertificateDto addCertificate(CertificateDto request) throws LogicException {
+        Certificate certificate = CertificateDtoToEntityConverter.convert(request);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimePattern);
         LocalDateTime now = LocalDateTime.parse(formatter.format(LocalDateTime.now()));
         certificate.setCreationDate(now);
         certificate.setLastUpdateTime(now);
+        Certificate addedCertificate;
         try {
-            certificateDao.addCertificate(certificate);
+             addedCertificate = certificateDao.addCertificate(certificate);
         } catch (DaoException e) {
             throw new LogicException(e.getMessage(), e.getErrorCode(), e);
         }
+        return CertificateEntityToDtoConverter.convert(addedCertificate);
     }
 
     @Override

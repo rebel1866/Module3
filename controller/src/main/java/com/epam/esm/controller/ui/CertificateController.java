@@ -1,6 +1,6 @@
 package com.epam.esm.controller.ui;
 
-import com.epam.esm.dto.AddCertificateRequest;
+import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.exception.UiControllerException;
 import com.epam.esm.dto.SearchCertificateRequest;
 import com.epam.esm.dto.SearchTagRequest;
@@ -39,7 +39,7 @@ public class CertificateController {
 
     @RequestMapping(value = "/certificates", method = {RequestMethod.POST})
     public String showCertificates(@ModelAttribute SearchCertificateRequest searchRequest, Model model) throws UiControllerException {
-        List<Certificate> certificates;
+        List<CertificateDto> certificates;
         try {
             certificates = certificateLogic.findCertificates(searchRequest);
         } catch (LogicException e) {
@@ -57,7 +57,7 @@ public class CertificateController {
 
     @RequestMapping(value = "/certificates")
     public String showCertificatesGet(Model model) throws UiControllerException {
-        List<Certificate> certificates;
+        List<CertificateDto> certificates;
         try {
             certificates = certificateLogic.findCertificates(new SearchCertificateRequest());
         } catch (LogicException e) {
@@ -81,7 +81,7 @@ public class CertificateController {
     }
 
     @RequestMapping(value = "/addCertificate", method = RequestMethod.POST)
-    public String addCertificate(@ModelAttribute @Valid AddCertificateRequest request, BindingResult bindingResult, Model model)
+    public String addCertificate(@ModelAttribute @Valid CertificateDto request, BindingResult bindingResult, Model model)
             throws UiControllerException {
         if (bindingResult.hasErrors()) {
             List<Tag> tags;

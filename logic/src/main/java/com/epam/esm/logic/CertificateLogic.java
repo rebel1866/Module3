@@ -1,21 +1,20 @@
 package com.epam.esm.logic;
 
-import com.epam.esm.dto.AddCertificateRequest;
+import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.SearchCertificateRequest;
 import com.epam.esm.dto.UpdateCertificateRequest;
-import com.epam.esm.entity.Certificate;
 import com.epam.esm.exception.LogicException;
 
 import java.util.List;
 
 public interface CertificateLogic {
-    List<Certificate> findCertificates(SearchCertificateRequest request) throws LogicException;
+    List<CertificateDto> findCertificates(SearchCertificateRequest request) throws LogicException;
 
-    void addCertificate(AddCertificateRequest request) throws LogicException;
+    CertificateDto addCertificate(CertificateDto request) throws LogicException;
 
     void deleteCertificate(int id) throws LogicException;
 
     void updateCertificate(UpdateCertificateRequest request) throws LogicException;
 
-    Certificate findCertificateById(int id) throws LogicException;
+    CertificateDto findCertificateById(int id) throws LogicException;
 }

@@ -8,12 +8,14 @@ import com.epam.esm.sqlgenerator.SqlGenerator;
 import com.epam.esm.entity.Certificate;
 import com.epam.esm.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Repository
@@ -32,6 +34,7 @@ public class CertificateDaoImpl implements CertificateDao {
     private static final String removeCertificateSql = "delete from gifts.gift_certificates where gift_certificate_id = ?";
     private static final String updateSql = "update gifts.gift_certificates set where gift_certificate_id=?";
     private static final String findByIdSql = "select * from gifts.gift_certificates where gift_certificate_id =?";
+    private static final String lastIdSql = "select max(gift_certificate_id) as max from gifts.gift_certificates";
 
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
@@ -55,19 +58,23 @@ public class CertificateDaoImpl implements CertificateDao {
         return certificates;
     }
 
+
     @Override
     public Certificate findCertificateById(int id) throws DaoException {
-        List<Certificate> certificates = jdbcTemplate.query(findByIdSql, new CertificateMapper(), id);
-        if (certificates.size() != 0) {
-            return certificates.get(0);
-        } else {
+        Certificate certificate;
+        try {
+            certificate = jdbcTemplate.queryForObject(findByIdSql, new CertificateMapper(), id);
+        } catch (EmptyResultDataAccessException e) {
             throw new DaoException("No certificate found by given id", "errorCode=1");
         }
+        List<Tag> tags = jdbcTemplate.query(findTagsByIdSQL, new TagMapper(), id);
+        certificate.setTags(tags);
+        return certificate;
     }
 
     @Override
     @Transactional
-    public void addCertificate(Certificate certificate) throws DaoException {
+    public Certificate addCertificate(Certificate certificate) throws DaoException {
         int rowAffected = jdbcTemplate.update(addCertificateSQL, certificate.getCertificateName(),
                 certificate.getDescription(), certificate.getPrice(), certificate.getDuration(),
                 certificate.getCreationDate(), certificate.getLastUpdateTime());
@@ -78,6 +85,8 @@ public class CertificateDaoImpl implements CertificateDao {
         for (Tag tag : tags) {
             jdbcTemplate.update(addCertificateTagsSQL, tag.getTagId());
         }
+        int id = getLastId();
+        return findCertificateById(id);
     }
 
     @Override
@@ -100,5 +109,10 @@ public class CertificateDaoImpl implements CertificateDao {
             throw new DaoException("Certificate has not been updated. Probably, given id " +
                     "does not exist.", "errorCode=3");
         }
+    }
+
+    private int getLastId() {
+        Integer value = jdbcTemplate.queryForObject(lastIdSql, Integer.class);
+        return Objects.requireNonNullElse(value, 0);
     }
 }

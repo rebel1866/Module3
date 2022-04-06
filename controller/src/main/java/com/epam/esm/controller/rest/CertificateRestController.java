@@ -1,6 +1,6 @@
 package com.epam.esm.controller.rest;
 
-import com.epam.esm.dto.AddCertificateRequest;
+import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.exception.RestControllerException;
 import com.epam.esm.dto.SearchCertificateRequest;
 import com.epam.esm.dto.UpdateCertificateRequest;
@@ -26,8 +26,8 @@ public class CertificateRestController {
     }
 
     @GetMapping(value = "/certificates", consumes = {"application/json"}, produces = {"application/json"})
-    public List<Certificate> getCertificates(@ModelAttribute @Valid SearchCertificateRequest searchRequest,
-                                             BindingResult bindingResult) throws RestControllerException, LogicException {
+    public List<CertificateDto> getCertificates(@ModelAttribute @Valid SearchCertificateRequest searchRequest,
+                                                BindingResult bindingResult) throws RestControllerException, LogicException {
         if (bindingResult.hasErrors()) {
             throw new RestControllerException("Wrong input data", "errorCode=3", bindingResult);
         }
@@ -35,18 +35,18 @@ public class CertificateRestController {
     }
 
     @GetMapping(value = "/certificates/{id}", consumes = {"application/json"}, produces = {"application/json"})
-    public Certificate getCertificateById(@PathVariable("id") int id) throws LogicException {
+    public CertificateDto getCertificateById(@PathVariable("id") int id) throws LogicException {
         return certificateLogic.findCertificateById(id);
     }
 
     @PostMapping(value = "/certificates", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
-    public void addCertificate(@RequestBody @Valid AddCertificateRequest request,
-                               BindingResult bindingResult) throws RestControllerException, LogicException {
+    public CertificateDto addCertificate(@RequestBody @Valid CertificateDto request,
+                                         BindingResult bindingResult) throws RestControllerException, LogicException {
         if (bindingResult.hasErrors()) {
             throw new RestControllerException("Wrong input data", "errorCode=3", bindingResult);
         }
-        certificateLogic.addCertificate(request);
+        return certificateLogic.addCertificate(request);
     }
 
     @DeleteMapping(value = "/certificates/{id}", consumes = {"application/json"}, produces = {"application/json"})

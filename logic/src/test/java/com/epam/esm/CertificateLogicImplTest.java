@@ -1,7 +1,7 @@
 package com.epam.esm;
 
 
-import com.epam.esm.dto.AddCertificateRequest;
+import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.entity.Certificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.dto.SearchCertificateRequest;
@@ -24,7 +24,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,26 +48,26 @@ class CertificateLogicImplTest {
 
     @Test
     public void testAdd() {
-        AddCertificateRequest requestAdd = getAddRequest();
+        CertificateDto requestAdd = getAddRequest();
         assertDoesNotThrow(() -> certificateLogic.addCertificate(requestAdd));
     }
 
     @Test
     public void testFind() throws LogicException {
-        AddCertificateRequest requestAdd = getAddRequest();
+        CertificateDto requestAdd = getAddRequest();
         certificateLogic.addCertificate(requestAdd);
         SearchCertificateRequest request = new SearchCertificateRequest();
         request.setCertificateName("TEST");
-        List<Certificate> certificates = certificateLogic.findCertificates(request);
+        List<CertificateDto> certificates = certificateLogic.findCertificates(request);
         Assertions.assertEquals(requestAdd.getCertificateName(), certificates.get(0).getCertificateName());
     }
 
     @Test
     public void testDelete() throws LogicException {
-        AddCertificateRequest requestAdd = getAddRequest();
+        CertificateDto requestAdd = getAddRequest();
         certificateLogic.addCertificate(requestAdd);
         SearchCertificateRequest request = getRequest();
-        List<Certificate> certificates = certificateLogic.findCertificates(request);
+        List<CertificateDto> certificates = certificateLogic.findCertificates(request);
         Assertions.assertEquals("TEST", certificates.get(0).getCertificateName());
         int id = certificates.get(0).getGiftCertificateId();
         certificateLogic.deleteCertificate(id);
@@ -79,17 +78,17 @@ class CertificateLogicImplTest {
 
     @Test
     public void testUpdate() throws LogicException {
-        AddCertificateRequest requestAdd = getAddRequest();
+        CertificateDto requestAdd = getAddRequest();
         certificateLogic.addCertificate(requestAdd);
         SearchCertificateRequest request = getRequest();
-        List<Certificate> certificates = certificateLogic.findCertificates(request);
+        List<CertificateDto> certificates = certificateLogic.findCertificates(request);
         Assertions.assertEquals("TEST", certificates.get(0).getCertificateName());
         int id = certificates.get(0).getGiftCertificateId();
         UpdateCertificateRequest request1 = new UpdateCertificateRequest();
         request1.setGiftCertificateId(id);
         request1.setCertificateName("NEW_TEST");
         certificateLogic.updateCertificate(request1);
-        Certificate newCertificate = certificateLogic.findCertificates(new SearchCertificateRequest()).get(0);
+        CertificateDto newCertificate = certificateLogic.findCertificates(new SearchCertificateRequest()).get(0);
         Assertions.assertEquals("NEW_TEST", newCertificate.getCertificateName());
     }
 
@@ -98,8 +97,8 @@ class CertificateLogicImplTest {
         JdbcTestUtils.dropTables(jdbcTemplate, "gifts.cert_tags", "gifts.tags", "gifts.gift_certificates");
     }
 
-    public static AddCertificateRequest getAddRequest() {
-        AddCertificateRequest request = new AddCertificateRequest();
+    public static CertificateDto getAddRequest() {
+        CertificateDto request = new CertificateDto();
         request.setCertificateName("TEST");
         Tag tag = new Tag();
         tag.setTagId(1);

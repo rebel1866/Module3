@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface CertificateDao {
     List<Certificate> findCertificates(Map<String,String> params) throws DaoException;
-    void addCertificate(Certificate certificate) throws DaoException;
+    Certificate addCertificate(Certificate certificate) throws DaoException;
 
     void deleteCertificate(int id) throws DaoException;
 

@@ -1,14 +1,19 @@
 package com.epam.esm.dto;
 
 import com.epam.esm.entity.Tag;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.time.LocalDateTime;
 import java.util.List;
 
-public class AddCertificateRequest {
+public class CertificateDto {
     private Integer giftCertificateId;
     @NotBlank(message = "certificateName must be filled")
     private String certificateName;
@@ -23,6 +28,12 @@ public class AddCertificateRequest {
     @Valid
     @NotNull(message = "tags must be filled")
     private List<Tag> tags;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime creationDate;
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime lastUpdateTime;
 
 
     public Integer getGiftCertificateId() {
@@ -71,5 +82,21 @@ public class AddCertificateRequest {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public LocalDateTime getLastUpdateTime() {
+        return lastUpdateTime;
+    }
+
+    public void setLastUpdateTime(LocalDateTime lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
     }
 }
