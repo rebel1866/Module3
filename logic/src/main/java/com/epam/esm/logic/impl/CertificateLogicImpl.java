@@ -75,7 +75,7 @@ public class CertificateLogicImpl implements CertificateLogic {
         certificate.setLastUpdateTime(now);
         Certificate addedCertificate;
         try {
-             addedCertificate = certificateDao.addCertificate(certificate);
+            addedCertificate = certificateDao.addCertificate(certificate);
         } catch (DaoException e) {
             throw new LogicException(e.getMessage(), e.getErrorCode(), e);
         }
@@ -95,12 +95,17 @@ public class CertificateLogicImpl implements CertificateLogic {
     }
 
     @Override
-    public void updateCertificate(UpdateCertificateRequest request) throws LogicException {
+    public CertificateDto updateCertificate(UpdateCertificateRequest request, int id) throws LogicException {
+        if (id <= 0) {
+            throw new LogicException("Id must be positive integer number", "errorCode=3");
+        }
         Map<String, String> params = ObjectToMapConverter.convertToMap(request);
+        Certificate certificate;
         try {
-            certificateDao.updateCertificate(params);
+            certificate = certificateDao.updateCertificate(params, id);
         } catch (DaoException e) {
             throw new LogicException(e.getMessage(), e.getErrorCode(), e);
         }
+        return CertificateEntityToDtoConverter.convert(certificate);
     }
 }

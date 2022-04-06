@@ -4,7 +4,6 @@ import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.exception.RestControllerException;
 import com.epam.esm.dto.SearchCertificateRequest;
 import com.epam.esm.dto.UpdateCertificateRequest;
-import com.epam.esm.entity.Certificate;
 import com.epam.esm.exception.LogicException;
 import com.epam.esm.logic.CertificateLogic;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,19 +49,19 @@ public class CertificateRestController {
     }
 
     @DeleteMapping(value = "/certificates/{id}", consumes = {"application/json"}, produces = {"application/json"})
-    public ResponseEntity<HttpStatus> deleteCertificate(@PathVariable("id") int id) throws LogicException {
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteCertificate(@PathVariable("id") int id) throws LogicException {
         certificateLogic.deleteCertificate(id);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     //id отдельно. убрать из dto. в path variable
-    @PutMapping(value = "/certificates", consumes = {"application/json"}, produces = {"application/json"})
-    public ResponseEntity<HttpStatus> updateCertificate(@RequestBody @Valid UpdateCertificateRequest request,
-                                                        BindingResult result) throws RestControllerException, LogicException {
+    @PutMapping(value = "/certificates/{id}", consumes = {"application/json"}, produces = {"application/json"})
+    @ResponseStatus(HttpStatus.OK)
+    public CertificateDto updateCertificate(@PathVariable("id") int id, @RequestBody @Valid
+            UpdateCertificateRequest request, BindingResult result) throws RestControllerException, LogicException {
         if (result.hasErrors()) {
             throw new RestControllerException("Wrong input data", "errorCode=3", result);
         }
-        certificateLogic.updateCertificate(request);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return certificateLogic.updateCertificate(request, id);
     }
 }

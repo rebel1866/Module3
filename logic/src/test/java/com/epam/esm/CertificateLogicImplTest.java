@@ -2,7 +2,6 @@ package com.epam.esm;
 
 
 import com.epam.esm.dto.CertificateDto;
-import com.epam.esm.entity.Certificate;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.dto.SearchCertificateRequest;
 import com.epam.esm.dto.UpdateCertificateRequest;
@@ -85,9 +84,8 @@ class CertificateLogicImplTest {
         Assertions.assertEquals("TEST", certificates.get(0).getCertificateName());
         int id = certificates.get(0).getGiftCertificateId();
         UpdateCertificateRequest request1 = new UpdateCertificateRequest();
-        request1.setGiftCertificateId(id);
         request1.setCertificateName("NEW_TEST");
-        certificateLogic.updateCertificate(request1);
+        certificateLogic.updateCertificate(request1,id);
         CertificateDto newCertificate = certificateLogic.findCertificates(new SearchCertificateRequest()).get(0);
         Assertions.assertEquals("NEW_TEST", newCertificate.getCertificateName());
     }

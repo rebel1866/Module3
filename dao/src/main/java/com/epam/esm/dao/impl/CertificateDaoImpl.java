@@ -100,15 +100,14 @@ public class CertificateDaoImpl implements CertificateDao {
 
     @Override
     @Transactional
-    public void updateCertificate(Map<String, String> params) throws DaoException {
-        String idStr = String.valueOf(params.remove("giftCertificateId"));
-        int id = Integer.parseInt(idStr);
+    public Certificate updateCertificate(Map<String, String> params, int id) throws DaoException {
         String targetSql = SqlGenerator.generateUpdateSql(params, updateSql);
         int rowAffected = jdbcTemplate.update(targetSql, id);
         if (rowAffected == 0) {
             throw new DaoException("Certificate has not been updated. Probably, given id " +
                     "does not exist.", "errorCode=3");
         }
+        return findCertificateById(id);
     }
 
     private int getLastId() {
