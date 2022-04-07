@@ -28,7 +28,7 @@ public class CertificateRestController {
     public List<CertificateDto> getCertificates(@ModelAttribute @Valid SearchCertificateRequest searchRequest,
                                                 BindingResult bindingResult) throws RestControllerException, LogicException {
         if (bindingResult.hasErrors()) {
-            throw new RestControllerException("Wrong input data", "errorCode=3", bindingResult);
+            throw new RestControllerException("messageCode11", "errorCode=3", bindingResult);
         }
         return certificateLogic.findCertificates(searchRequest);
     }
@@ -43,7 +43,7 @@ public class CertificateRestController {
     public CertificateDto addCertificate(@RequestBody @Valid CertificateDto request,
                                          BindingResult bindingResult) throws RestControllerException, LogicException {
         if (bindingResult.hasErrors()) {
-            throw new RestControllerException("Wrong input data", "errorCode=3", bindingResult);
+            throw new RestControllerException("messageCode11", "errorCode=3", bindingResult);
         }
         return certificateLogic.addCertificate(request);
     }
@@ -59,7 +59,7 @@ public class CertificateRestController {
     public CertificateDto updateCertificate(@PathVariable("id") int id, @RequestBody @Valid
             UpdateCertificateRequest request, BindingResult result) throws RestControllerException, LogicException {
         if (result.hasErrors()) {
-            throw new RestControllerException("Wrong input data", "errorCode=3", result);
+            throw new RestControllerException("messageCode11", "errorCode=3", result);
         }
         return certificateLogic.updateCertificate(request, id);
     }

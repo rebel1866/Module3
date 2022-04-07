@@ -7,7 +7,7 @@ public class UpdateCertificateRequest {
     private String description;
     @Positive
     private Integer price;
-    @Positive(message = "duration must be positive number")
+    @Positive(message = "rCode1")
     private Integer duration;
 
     public String getCertificateName() {

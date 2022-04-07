@@ -49,7 +49,7 @@ public class TagLogicImpl implements TagLogic {
     @Override
     public TagDto findTagById(int id) throws LogicException {
         if (id <= 0) {
-            throw new LogicException("Id must be positive integer number", "errorCode=3");
+            throw new LogicException("messageCode10", "errorCode=3");
         }
         Tag tag;
         try {

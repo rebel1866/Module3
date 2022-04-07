@@ -53,7 +53,7 @@ public class CertificateDaoImpl implements CertificateDao {
             certificate.setTags(tags);
         }
         if (certificates.size() == 0) {
-            throw new DaoException("No certificates found", "errorCode=1");
+            throw new DaoException("messageCode1", "errorCode=1");
         }
         return certificates;
     }
@@ -65,7 +65,7 @@ public class CertificateDaoImpl implements CertificateDao {
         try {
             certificate = jdbcTemplate.queryForObject(findByIdSql, new CertificateMapper(), id);
         } catch (EmptyResultDataAccessException e) {
-            throw new DaoException("No certificate found by given id", "errorCode=1");
+            throw new DaoException("messageCode2", "errorCode=1");
         }
         List<Tag> tags = jdbcTemplate.query(findTagsByIdSQL, new TagMapper(), id);
         certificate.setTags(tags);
@@ -79,7 +79,7 @@ public class CertificateDaoImpl implements CertificateDao {
                 certificate.getDescription(), certificate.getPrice(), certificate.getDuration(),
                 certificate.getCreationDate(), certificate.getLastUpdateTime());
         if (rowAffected == 0) {
-            throw new DaoException("Certificate has not been added", "errorCode=2");
+            throw new DaoException("messageCode3", "errorCode=2");
         }
         List<Tag> tags = certificate.getTags();
         for (Tag tag : tags) {
@@ -93,8 +93,7 @@ public class CertificateDaoImpl implements CertificateDao {
     public void deleteCertificate(int id) throws DaoException {
         int rowAffected = jdbcTemplate.update(removeCertificateSql, id);
         if (rowAffected == 0) {
-            throw new DaoException("Certificate has not been deleted. Probably, given id does " +
-                    "not exist.", "errorCode=3");
+            throw new DaoException("messageCode4", "errorCode=3");
         }
     }
 
@@ -104,8 +103,7 @@ public class CertificateDaoImpl implements CertificateDao {
         String targetSql = SqlGenerator.generateUpdateSql(params, updateSql);
         int rowAffected = jdbcTemplate.update(targetSql, id);
         if (rowAffected == 0) {
-            throw new DaoException("Certificate has not been updated. Probably, given id " +
-                    "does not exist.", "errorCode=3");
+            throw new DaoException("messageCode5", "errorCode=3");
         }
         return findCertificateById(id);
     }

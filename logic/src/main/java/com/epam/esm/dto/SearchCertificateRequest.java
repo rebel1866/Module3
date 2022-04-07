@@ -7,15 +7,14 @@ import javax.validation.constraints.Positive;
 public class SearchCertificateRequest {
     private String certificateName;
     private String tagName;
-    @Positive(message = "Field priceFrom must be positive number")
+    @Positive(message = "rCode2")
     private Integer priceFrom;
-    @Positive(message = "Field priceTo must be positive number")
+    @Positive(message = "rCode3")
     private Integer priceTo;
     @Pattern(regexp = "price|certificate_name|creation_date|certificate_name, creation_date",
-            message = "Acceptable values for field \"sorting\" are: 1)price 2)certificate_name " +
-                    "3)creation_date 4)certificate_name, creation_date")
+            message = "rCode4")
     private String sorting;
-    @Pattern(regexp = "asc|desc", message = "sorting_order must be: \"asc\" or \"desc\"")
+    @Pattern(regexp = "asc|desc", message = "rCode5")
     private String sortingOrder;
 
     public String getCertificateName() {

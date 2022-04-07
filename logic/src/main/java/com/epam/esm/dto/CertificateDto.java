@@ -15,18 +15,18 @@ import java.util.List;
 
 public class CertificateDto {
     private Integer giftCertificateId;
-    @NotBlank(message = "certificateName must be filled")
+    @NotBlank(message = "rCode6")
     private String certificateName;
-    @NotBlank(message = "description must be filled")
+    @NotBlank(message = "rCode7")
     private String description;
     @Positive
-    @NotNull(message = "price must be filled")
+    @NotNull(message = "rCode8")
     private Integer price;
-    @NotNull(message = "duration must be filled")
-    @Positive(message = "duration must be positive number")
+    @NotNull(message = "rCode9")
+    @Positive(message = "rCode10")
     private Integer duration;
     @Valid
-    @NotNull(message = "tags must be filled")
+    @NotNull(message = "rCode11")
     private List<Tag> tags;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)

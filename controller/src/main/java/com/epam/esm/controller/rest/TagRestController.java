@@ -28,7 +28,7 @@ public class TagRestController {
     public List<TagDto> getTags(@ModelAttribute @Valid SearchTagRequest request, BindingResult bindingResult)
             throws RestControllerException, LogicException {
         if (bindingResult.hasErrors()) {
-            throw new RestControllerException("Wrong input data", "errorCode=3", bindingResult);
+            throw new RestControllerException("messageCode11", "errorCode=3", bindingResult);
         }
         return tagLogic.findTags(request);
     }
