@@ -48,9 +48,7 @@ public class TagLogicImpl implements TagLogic {
 
     @Override
     public TagDto findTagById(int id) throws LogicException {
-        if (id <= 0) {
-            throw new LogicException("messageCode10", "errorCode=3");
-        }
+        validateId(id);
         Tag tag;
         try {
             tag = tagDao.findTagById(id);
@@ -74,13 +72,17 @@ public class TagLogicImpl implements TagLogic {
 
     @Override
     public void deleteTag(int id) throws LogicException {
-        if (id <= 0) {
-            throw new LogicException("Id must be positive integer number", "errorCode=3");
-        }
+        validateId(id);
         try {
             tagDao.deleteTag(id);
         } catch (DaoException e) {
             throw new LogicException(e.getMessage(), e.getErrorCode(), e);
+        }
+    }
+
+    private void validateId(int id) throws LogicException {
+        if (id <= 0) {
+            throw new LogicException("messageCode10", "errorCode=3");
         }
     }
 }

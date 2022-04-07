@@ -22,6 +22,8 @@ import java.util.*;
 public class ErrorHandler extends ResponseEntityExceptionHandler {
     private final static Map<String, HttpStatus> codesAndStatuses = new HashMap<>();
     private String defaultResponse = "Error has occurred";
+    private static final String defaultLocale = "en";
+    private static final String bundleName = "lang";
 
     static {
         codesAndStatuses.put("errorCode=1", HttpStatus.NOT_FOUND);
@@ -81,10 +83,10 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
     private String getLocalizedMessage(String message, HttpServletRequest request) {
         String localeStr = request.getHeader("locale");
         if (localeStr == null) {
-            localeStr = "en";
+            localeStr = defaultLocale;
         }
         Locale locale = new Locale(localeStr);
-        ResourceBundle bundle = ResourceBundle.getBundle("lang", locale);
+        ResourceBundle bundle = ResourceBundle.getBundle(bundleName, locale);
         return bundle.getString(message);
     }
 

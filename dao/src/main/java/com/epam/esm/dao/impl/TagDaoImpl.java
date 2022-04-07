@@ -6,6 +6,7 @@ import com.epam.esm.mapper.TagMapper;
 import com.epam.esm.sqlgenerator.SqlGenerator;
 import com.epam.esm.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,12 +41,13 @@ public class TagDaoImpl implements TagDao {
 
     @Override
     public Tag findTagById(int id) throws DaoException {
-        List<Tag> tags = jdbcTemplate.query(findByIdSql, new TagMapper(), id);
-        if (tags.size() != 0) {
-            return tags.get(0);
-        } else {
+        Tag tag;
+        try {
+            tag = jdbcTemplate.queryForObject(findByIdSql, new TagMapper(), id);
+        } catch (EmptyResultDataAccessException e) {
             throw new DaoException("messageCode7", "errorCode=1");
         }
+        return tag;
     }
 
     @Override
@@ -66,6 +68,7 @@ public class TagDaoImpl implements TagDao {
             throw new DaoException("messageCode9", "errorCode=2");
         }
     }
+
     private int getLastId() {
         Integer value = jdbcTemplate.queryForObject(lastIdSql, Integer.class);
         return Objects.requireNonNullElse(value, 0);

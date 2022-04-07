@@ -52,12 +52,9 @@ public class CertificateLogicImpl implements CertificateLogic {
         return CertificateEntityToDtoConverter.convertList(certificates);
     }
 
-    // validation id в отдельный класс?
     @Override
     public CertificateDto findCertificateById(int id) throws LogicException {
-        if (id <= 0) {
-            throw new LogicException("Id must be positive integer number", "errorCode=3");
-        }
+        validateId(id);
         try {
             Certificate certificate = certificateDao.findCertificateById(id);
             return CertificateEntityToDtoConverter.convert(certificate);
@@ -84,9 +81,7 @@ public class CertificateLogicImpl implements CertificateLogic {
 
     @Override
     public void deleteCertificate(int id) throws LogicException {
-        if (id <= 0) {
-            throw new LogicException("Id must be positive integer number", "errorCode=3");
-        }
+        validateId(id);
         try {
             certificateDao.deleteCertificate(id);
         } catch (DaoException e) {
@@ -96,9 +91,7 @@ public class CertificateLogicImpl implements CertificateLogic {
 
     @Override
     public CertificateDto updateCertificate(UpdateCertificateRequest request, int id) throws LogicException {
-        if (id <= 0) {
-            throw new LogicException("Id must be positive integer number", "errorCode=3");
-        }
+        validateId(id);
         Map<String, String> params = ObjectToMapConverter.convertToMap(request);
         Certificate certificate;
         try {
@@ -107,5 +100,11 @@ public class CertificateLogicImpl implements CertificateLogic {
             throw new LogicException(e.getMessage(), e.getErrorCode(), e);
         }
         return CertificateEntityToDtoConverter.convert(certificate);
+    }
+
+    private void validateId(int id) throws LogicException {
+        if (id <= 0) {
+            throw new LogicException("messageCode10", "errorCode=3");
+        }
     }
 }

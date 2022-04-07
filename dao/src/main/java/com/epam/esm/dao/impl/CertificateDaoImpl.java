@@ -60,6 +60,7 @@ public class CertificateDaoImpl implements CertificateDao {
 
 
     @Override
+    @Transactional
     public Certificate findCertificateById(int id) throws DaoException {
         Certificate certificate;
         try {

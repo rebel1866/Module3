@@ -1,6 +1,5 @@
 package com.epam.esm.dto;
 
-import javax.validation.constraints.Pattern;
 
 public class TagDto {
     private Integer tagId;
