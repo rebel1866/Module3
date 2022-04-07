@@ -2,3 +2,9 @@ Gifts2.iml
 .idea/
 **/target
 dao/src/main/resources/dbConfig.properties
+dao/dao.iml
+logic/logic.iml
+webapplication/webapplication.iml
+controller/controller.iml
+
+
