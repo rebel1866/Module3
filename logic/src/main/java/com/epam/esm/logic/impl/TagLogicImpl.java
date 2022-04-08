@@ -3,7 +3,6 @@ package com.epam.esm.logic.impl;
 import com.epam.esm.dto.SearchTagRequest;
 import com.epam.esm.converter.TagEntityToDtoConverter;
 import com.epam.esm.dto.TagDto;
-import com.epam.esm.exception.DaoException;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.LogicException;
@@ -54,7 +53,14 @@ public class TagLogicImpl implements TagLogic {
     @Override
     @Transactional
     public TagDto addTag(String tagName) {
+        if (tagName == null || tagName.equals("")) {
+            throw new LogicException("rCode17", "errorCode=3");
+        }
         Tag tag = new Tag(tagName);
+        boolean isExist = tagDao.isTagExist(tag);
+        if (isExist) {
+            throw new LogicException("messageCode12", "errorCode=3");
+        }
         Tag addedTag;
         addedTag = tagDao.addTag(tag);
         return TagEntityToDtoConverter.convert(addedTag);

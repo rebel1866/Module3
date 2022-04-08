@@ -22,6 +22,7 @@ public class TagDaoImpl implements TagDao {
     private static final String deleteTagSql = "delete from gifts.tags where tag_id =?";
     private static final String findByIdSql = "select * from gifts.tags where tag_id =?";
     private static final String lastIdSql = "select max(tag_id) as max from gifts.tags";
+    private static final String SEARCH_BY_NAME_SQL = "select tag_name, tag_id from gifts.tags where tag_name=?";
 
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
@@ -65,6 +66,12 @@ public class TagDaoImpl implements TagDao {
         if (rowsAffected == 0) {
             throw new DaoException("messageCode9", "errorCode=2");
         }
+    }
+
+    @Override
+    public boolean isTagExist(Tag tag) {
+        List<Tag> tags = jdbcTemplate.query(SEARCH_BY_NAME_SQL, new TagMapper(), tag.getTagName());
+        return tags.size() > 0;
     }
 
     private int getLastId() {

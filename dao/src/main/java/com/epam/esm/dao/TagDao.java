@@ -14,4 +14,5 @@ public interface TagDao {
     void deleteTag(int id) throws DaoException;
 
     Tag findTagById(int id) throws DaoException;
+    boolean isTagExist(Tag tag);
 }
