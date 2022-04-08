@@ -1,14 +1,16 @@
 package com.epam.esm.dto;
 
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.Pattern;
 
 public class UpdateCertificateRequest {
+    @Pattern(regexp = "[A-Za-zА-Яа-я ]+", message = "rCode15")
     private String certificateName;
+    @Pattern(regexp = "[A-Za-zА-Яа-я ]+", message = "rCode16")
     private String description;
-    @Positive
-    private Integer price;
-    @Positive(message = "rCode1")
-    private Integer duration;
+    @Pattern(regexp = "^[1-9]+[0-9]*$", message = "rCode12")
+    private String price;
+    @Pattern(regexp = "^[1-9]+[0-9]*$", message = "rCode1")
+    private String duration;
 
     public String getCertificateName() {
         return certificateName;
@@ -26,19 +28,19 @@ public class UpdateCertificateRequest {
         this.description = description;
     }
 
-    public Integer getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
-    public Integer getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 }

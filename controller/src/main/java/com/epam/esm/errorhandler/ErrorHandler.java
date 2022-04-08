@@ -100,7 +100,6 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
         }
         Locale locale = new Locale(localeStr);
         ResourceBundle bundle = ResourceBundle.getBundle(bundleName, locale);
-        System.out.println(message);
         return bundle.getString(message);
     }
 

@@ -5,12 +5,14 @@ import javax.validation.constraints.Positive;
 
 
 public class SearchCertificateRequest {
+    @Pattern(regexp = "[A-Za-zА-Яа-я]+",message = "rCode13")
     private String certificateName;
+    @Pattern(regexp = "[A-Za-zА-Яа-я]+",message = "rCode14")
     private String tagName;
-    @Positive(message = "rCode2")
-    private Integer priceFrom;
-    @Positive(message = "rCode3")
-    private Integer priceTo;
+    @Pattern(regexp = "^[1-9]+[0-9]*$",message = "rCode2")
+    private String priceFrom;
+    @Pattern(regexp = "^[1-9]+[0-9]*$",message = "rCode3")
+    private String priceTo;
     @Pattern(regexp = "price|certificate_name|creation_date|certificate_name, creation_date",
             message = "rCode4")
     private String sorting;
@@ -33,19 +35,19 @@ public class SearchCertificateRequest {
         this.tagName = tagName;
     }
 
-    public Integer getPriceFrom() {
+    public String getPriceFrom() {
         return priceFrom;
     }
 
-    public void setPriceFrom(Integer priceFrom) {
+    public void setPriceFrom(String priceFrom) {
         this.priceFrom = priceFrom;
     }
 
-    public Integer getPriceTo() {
+    public String getPriceTo() {
         return priceTo;
     }
 
-    public void setPriceTo(Integer priceTo) {
+    public void setPriceTo(String priceTo) {
         this.priceTo = priceTo;
     }
 

@@ -3,6 +3,7 @@ package com.epam.esm.dto;
 import javax.validation.constraints.Pattern;
 
 public class SearchTagRequest {
+    @Pattern(regexp = "[A-Za-zА-Яа-я ]+", message = "rCode17")
     private String tagName;
     @Pattern(regexp = "tagId|tagName",
             message = "Acceptable values for field \"sorting\" are: 1)tagName 2)tagId")
