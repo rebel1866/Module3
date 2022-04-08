@@ -19,7 +19,7 @@ public class CertificateDto {
     private String certificateName;
     @NotBlank(message = "rCode7")
     private String description;
-    @Positive
+    @Positive(message = "rCode12")
     @NotNull(message = "rCode8")
     private Integer price;
     @NotNull(message = "rCode9")
