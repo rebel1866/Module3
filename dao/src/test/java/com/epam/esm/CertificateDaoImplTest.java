@@ -67,7 +67,7 @@ public class CertificateDaoImplTest {
         int id = certificates.get(0).getGiftCertificateId();
         certificateDao.deleteCertificate(id);
         DaoException thrown = Assertions.assertThrows(DaoException.class, () -> certificateDao.findCertificates(params));
-        Assertions.assertEquals("No certificates found", thrown.getMessage());
+        Assertions.assertEquals("messageCode1", thrown.getMessage());
     }
 
     @Test
