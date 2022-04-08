@@ -1,6 +1,7 @@
 package com.epam.esm.errorhandler;
 
 
+import com.epam.esm.exception.DaoException;
 import com.epam.esm.exception.LogicException;
 import com.epam.esm.exception.RestControllerException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -49,10 +50,21 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(LogicException.class)
-    public ResponseEntity<String> handleLogicException(LogicException logicException, HttpServletRequest request) {
-        HttpStatus status = codesAndStatuses.get(logicException.getErrorCode());
-        String localizedMessage = getLocalizedMessage(logicException.getMessage(), request);
-        ErrorMessage errorMessage = new ErrorMessage(localizedMessage, logicException.getErrorCode(),
+    public ResponseEntity<String> handleLogicException
+            (LogicException logicException, HttpServletRequest request) {
+        return handle(logicException, logicException.getErrorCode(), request);
+    }
+
+    @ExceptionHandler(DaoException.class)
+    public ResponseEntity<String> handleDaoException
+            (DaoException daoException, HttpServletRequest request) {
+        return handle(daoException, daoException.getErrorCode(), request);
+    }
+
+    public ResponseEntity<String> handle(Exception exception, String errorCode, HttpServletRequest request) {
+        HttpStatus status = codesAndStatuses.get(errorCode);
+        String localizedMessage = getLocalizedMessage(exception.getMessage(), request);
+        ErrorMessage errorMessage = new ErrorMessage(localizedMessage, errorCode,
                 status, localizedMessage);
         try {
             defaultResponse = getDefResponse(errorMessage);
@@ -62,6 +74,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
         HttpHeaders httpHeaders = getUTF8Headers();
         return new ResponseEntity<>(defaultResponse, httpHeaders, status);
     }
+
 
     private StringBuilder generateCauseMessage(Errors errors, RestControllerException resException, HttpServletRequest request) {
         StringBuilder causeMessage;

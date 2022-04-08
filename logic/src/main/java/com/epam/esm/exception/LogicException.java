@@ -1,6 +1,6 @@
 package com.epam.esm.exception;
 
-public class LogicException extends Exception {
+public class LogicException extends RuntimeException {
     private String errorCode;
 
     public LogicException() {

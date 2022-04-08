@@ -28,7 +28,7 @@ public class TagLogicImpl implements TagLogic {
     }
 
     @Override
-    public List<TagDto> findTags(SearchTagRequest request) throws LogicException {
+    public List<TagDto> findTags(SearchTagRequest request) {
         Map<String, String> params = ObjectToMapConverter.convertToMap(request);
         var iterator = params.entrySet().iterator();
         Map<String, String> newParams = new HashMap<>();
@@ -39,50 +39,34 @@ public class TagLogicImpl implements TagLogic {
             newParams.put(key, value);
         }
         List<Tag> tags;
-        try {
-            tags = tagDao.findTags(newParams);
-        } catch (DaoException e) {
-            throw new LogicException(e.getMessage(), e.getErrorCode(), e);
-        }
+        tags = tagDao.findTags(newParams);
         return TagEntityToDtoConverter.convertList(tags);
     }
 
     @Override
-    public TagDto findTagById(int id) throws LogicException {
+    public TagDto findTagById(int id) {
         validateId(id);
         Tag tag;
-        try {
-            tag = tagDao.findTagById(id);
-        } catch (DaoException e) {
-            throw new LogicException(e.getMessage(), e.getErrorCode(), e);
-        }
+        tag = tagDao.findTagById(id);
         return TagEntityToDtoConverter.convert(tag);
     }
 
     @Override
     @Transactional
-    public TagDto addTag(String tagName) throws LogicException {
+    public TagDto addTag(String tagName) {
         Tag tag = new Tag(tagName);
         Tag addedTag;
-        try {
-            addedTag = tagDao.addTag(tag);
-        } catch (DaoException e) {
-            throw new LogicException(e.getMessage(), e.getErrorCode(), e);
-        }
+        addedTag = tagDao.addTag(tag);
         return TagEntityToDtoConverter.convert(addedTag);
     }
 
     @Override
-    public void deleteTag(int id) throws LogicException {
+    public void deleteTag(int id) {
         validateId(id);
-        try {
-            tagDao.deleteTag(id);
-        } catch (DaoException e) {
-            throw new LogicException(e.getMessage(), e.getErrorCode(), e);
-        }
+        tagDao.deleteTag(id);
     }
 
-    private void validateId(int id) throws LogicException {
+    private void validateId(int id) {
         if (id <= 0) {
             throw new LogicException("messageCode10", "errorCode=3");
         }

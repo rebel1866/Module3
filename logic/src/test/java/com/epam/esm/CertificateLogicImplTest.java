@@ -56,7 +56,7 @@ class CertificateLogicImplTest {
 
 
     @Test
-    public void addCertificateTest() throws DaoException, LogicException {
+    public void addCertificateTest() {
         CertificateDto certificateDto = new CertificateDto();
         certificateDto.setTags(new ArrayList<>());
         Certificate c = new Certificate();
@@ -70,7 +70,7 @@ class CertificateLogicImplTest {
     }
 
     @Test
-    public void getCertificatesTest() throws DaoException, LogicException {
+    public void getCertificatesTest(){
         SearchCertificateRequest request = new SearchCertificateRequest();
         request.setCertificateName("test");
         certificateLogic.findCertificates(request);
@@ -79,7 +79,7 @@ class CertificateLogicImplTest {
     }
 
     @Test
-    public void getCertificatesByIdTest() throws DaoException, LogicException {
+    public void getCertificatesByIdTest() {
         Certificate certificate = new Certificate();
         certificate.setCertificateName("test");
         Mockito.when(certificateDao.findCertificateById(5)).thenReturn(certificate);
@@ -89,13 +89,13 @@ class CertificateLogicImplTest {
     }
 
     @Test
-    public void deleteCertificateTest() throws LogicException {
+    public void deleteCertificateTest() {
         LogicException logicException = Assertions.assertThrows(LogicException.class, () -> certificateLogic.deleteCertificate(-5));
         Assertions.assertEquals("messageCode10", logicException.getMessage());
     }
 
     @Test
-    public void testUpdate() throws LogicException, DaoException {
+    public void testUpdate(){
         UpdateCertificateRequest request = new UpdateCertificateRequest();
         request.setCertificateName("test");
         Certificate certificate = new Certificate();

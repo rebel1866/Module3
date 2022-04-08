@@ -25,7 +25,7 @@ public class CertificateRestController {
 
     @GetMapping(value = "/certificates", consumes = {"application/json"}, produces = {"application/json"})
     public List<CertificateDto> getCertificates(@ModelAttribute @Valid SearchCertificateRequest searchRequest,
-                                                BindingResult bindingResult) throws RestControllerException, LogicException {
+                                                BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new RestControllerException("messageCode11", "errorCode=3", bindingResult);
         }
@@ -33,14 +33,14 @@ public class CertificateRestController {
     }
 
     @GetMapping(value = "/certificates/{id}", consumes = {"application/json"}, produces = {"application/json"})
-    public CertificateDto getCertificateById(@PathVariable("id") int id) throws LogicException {
+    public CertificateDto getCertificateById(@PathVariable("id") int id) {
         return certificateLogic.findCertificateById(id);
     }
 
     @PostMapping(value = "/certificates", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
     public CertificateDto addCertificate(@RequestBody @Valid CertificateDto request,
-                                         BindingResult bindingResult) throws RestControllerException, LogicException {
+                                         BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             throw new RestControllerException("messageCode11", "errorCode=3", bindingResult);
         }
@@ -49,14 +49,14 @@ public class CertificateRestController {
 
     @DeleteMapping(value = "/certificates/{id}", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
-    public void deleteCertificate(@PathVariable("id") int id) throws LogicException {
+    public void deleteCertificate(@PathVariable("id") int id){
         certificateLogic.deleteCertificate(id);
     }
 
     @PutMapping(value = "/certificates/{id}", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
-    public CertificateDto updateCertificate(@PathVariable("id") int id, @RequestBody @Valid
-            UpdateCertificateRequest request, BindingResult result) throws RestControllerException, LogicException {
+    public CertificateDto updateCertificate(@PathVariable("id") int id, @RequestBody @Valid UpdateCertificateRequest
+            request, BindingResult result) {
         if (result.hasErrors()) {
             throw new RestControllerException("messageCode11", "errorCode=3", result);
         }

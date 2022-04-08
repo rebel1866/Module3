@@ -41,7 +41,7 @@ public class CertificateDaoImpl implements CertificateDao {
     }
 
     @Override
-    public List<Certificate> findCertificates(Map<String, String> params) throws DaoException {
+    public List<Certificate> findCertificates(Map<String, String> params) {
         String targetSql = SqlGenerator.generateSQL(certificatesSQL, params);
         List<Certificate> certificates = jdbcTemplate.query(targetSql, new CertificateMapper());
         certificates = certificates.stream().distinct().collect(Collectors.toList());
@@ -58,7 +58,7 @@ public class CertificateDaoImpl implements CertificateDao {
 
 
     @Override
-    public Certificate findCertificateById(int id) throws DaoException {
+    public Certificate findCertificateById(int id) {
         Certificate certificate;
         try {
             certificate = jdbcTemplate.queryForObject(findByIdSql, new CertificateMapper(), id);
@@ -71,7 +71,7 @@ public class CertificateDaoImpl implements CertificateDao {
     }
 
     @Override
-    public Certificate addCertificate(Certificate certificate) throws DaoException {
+    public Certificate addCertificate(Certificate certificate) {
         int rowAffected = jdbcTemplate.update(addCertificateSQL, certificate.getCertificateName(),
                 certificate.getDescription(), certificate.getPrice(), certificate.getDuration(),
                 certificate.getCreationDate(), certificate.getLastUpdateTime());
@@ -87,7 +87,7 @@ public class CertificateDaoImpl implements CertificateDao {
     }
 
     @Override
-    public void deleteCertificate(int id) throws DaoException {
+    public void deleteCertificate(int id){
         int rowAffected = jdbcTemplate.update(removeCertificateSql, id);
         if (rowAffected == 0) {
             throw new DaoException("messageCode4", "errorCode=3");
@@ -95,7 +95,7 @@ public class CertificateDaoImpl implements CertificateDao {
     }
 
     @Override
-    public Certificate updateCertificate(Map<String, String> params, int id) throws DaoException {
+    public Certificate updateCertificate(Map<String, String> params, int id) {
         String targetSql = SqlGenerator.generateUpdateSql(params, updateSql);
         int rowAffected = jdbcTemplate.update(targetSql, id);
         if (rowAffected == 0) {

@@ -3,7 +3,7 @@ package com.epam.esm.exception;
 
 import org.springframework.validation.Errors;
 
-public class RestControllerException extends Exception {
+public class RestControllerException extends RuntimeException {
     private String errorCode;
     private Errors errors;
 

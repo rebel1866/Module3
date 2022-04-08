@@ -35,7 +35,7 @@ public class CertificateLogicImpl implements CertificateLogic {
 
     @Override
     @Transactional
-    public List<CertificateDto> findCertificates(SearchCertificateRequest request) throws LogicException {
+    public List<CertificateDto> findCertificates(SearchCertificateRequest request) {
         Map<String, String> params = ObjectToMapConverter.convertToMap(request);
         var iterator = params.entrySet().iterator();
         Map<String, String> newParams = new HashMap<>();
@@ -46,68 +46,48 @@ public class CertificateLogicImpl implements CertificateLogic {
             newParams.put(key, value);
         }
         List<Certificate> certificates;
-        try {
-            certificates = certificateDao.findCertificates(newParams);
-        } catch (DaoException e) {
-            throw new LogicException(e.getMessage(), e.getErrorCode(), e);
-        }
+        certificates = certificateDao.findCertificates(newParams);
         return CertificateEntityToDtoConverter.convertList(certificates);
     }
 
     @Override
     @Transactional
-    public CertificateDto findCertificateById(int id) throws LogicException {
+    public CertificateDto findCertificateById(int id) {
         validateId(id);
-        try {
-            Certificate certificate = certificateDao.findCertificateById(id);
-            return CertificateEntityToDtoConverter.convert(certificate);
-        } catch (DaoException e) {
-            throw new LogicException(e.getMessage(), e.getErrorCode(), e);
-        }
+        Certificate certificate = certificateDao.findCertificateById(id);
+        return CertificateEntityToDtoConverter.convert(certificate);
     }
 
     @Override
     @Transactional
-    public CertificateDto addCertificate(CertificateDto request) throws LogicException {
+    public CertificateDto addCertificate(CertificateDto request) {
         Certificate certificate = CertificateDtoToEntityConverter.convert(request);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimePattern);
         LocalDateTime now = LocalDateTime.parse(formatter.format(LocalDateTime.now()));
         certificate.setCreationDate(now);
         certificate.setLastUpdateTime(now);
         Certificate addedCertificate;
-        try {
-            addedCertificate = certificateDao.addCertificate(certificate);
-        } catch (DaoException e) {
-            throw new LogicException(e.getMessage(), e.getErrorCode(), e);
-        }
+        addedCertificate = certificateDao.addCertificate(certificate);
         return CertificateEntityToDtoConverter.convert(addedCertificate);
     }
 
     @Override
-    public void deleteCertificate(int id) throws LogicException {
+    public void deleteCertificate(int id) {
         validateId(id);
-        try {
-            certificateDao.deleteCertificate(id);
-        } catch (DaoException e) {
-            throw new LogicException(e.getMessage(), e.getErrorCode(), e);
-        }
+        certificateDao.deleteCertificate(id);
     }
 
     @Override
     @Transactional
-    public CertificateDto updateCertificate(UpdateCertificateRequest request, int id) throws LogicException {
+    public CertificateDto updateCertificate(UpdateCertificateRequest request, int id) {
         validateId(id);
         Map<String, String> params = ObjectToMapConverter.convertToMap(request);
         Certificate certificate;
-        try {
-            certificate = certificateDao.updateCertificate(params, id);
-        } catch (DaoException e) {
-            throw new LogicException(e.getMessage(), e.getErrorCode(), e);
-        }
+        certificate = certificateDao.updateCertificate(params, id);
         return CertificateEntityToDtoConverter.convert(certificate);
     }
 
-    private void validateId(int id) throws LogicException {
+    private void validateId(int id) {
         if (id <= 0) {
             throw new LogicException("messageCode10", "errorCode=3");
         }

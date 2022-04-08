@@ -24,8 +24,7 @@ public class TagRestController {
     }
 
     @GetMapping(value = "/tags", consumes = {"application/json"}, produces = {"application/json"})
-    public List<TagDto> getTags(@ModelAttribute @Valid SearchTagRequest request, BindingResult bindingResult)
-            throws RestControllerException, LogicException {
+    public List<TagDto> getTags(@ModelAttribute @Valid SearchTagRequest request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new RestControllerException("messageCode11", "errorCode=3", bindingResult);
         }
@@ -33,19 +32,19 @@ public class TagRestController {
     }
 
     @GetMapping(value = "/tags/{id}", consumes = {"application/json"}, produces = {"application/json"})
-    public TagDto getTagById(@PathVariable("id") int id) throws LogicException {
+    public TagDto getTagById(@PathVariable("id") int id) {
         return tagLogic.findTagById(id);
     }
 
     @PostMapping(value = "/tags", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
-    public TagDto addCertificate(@RequestBody Map<String,String> param)throws LogicException {
+    public TagDto addCertificate(@RequestBody Map<String,String> param){
         return tagLogic.addTag(param.get("tagName"));
     }
 
     @DeleteMapping(value = "/tags/{id}", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
-    public void deleteTag(@PathVariable("id") int id) throws LogicException {
+    public void deleteTag(@PathVariable("id") int id){
         tagLogic.deleteTag(id);
     }
 }

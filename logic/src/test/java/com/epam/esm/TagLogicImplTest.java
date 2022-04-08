@@ -56,7 +56,7 @@ class TagLogicImplTest {
     }
 
     @Test
-    void getTagsByParamsTest() throws LogicException, DaoException {
+    void getTagsByParamsTest() {
         SearchTagRequest request = new SearchTagRequest();
         request.setTagName("test");
         tagLogic.findTags(request);
@@ -65,7 +65,7 @@ class TagLogicImplTest {
     }
 
     @Test
-    void getTagByIdTest() throws DaoException, LogicException {
+    void getTagByIdTest() {
         Tag tag = new Tag();
         tag.setTagName("new");
         Mockito.when(tagDao.findTagById(5)).thenReturn(tag);
@@ -75,7 +75,7 @@ class TagLogicImplTest {
     }
 
     @Test
-    void addTagTest() throws LogicException, DaoException {
+    void addTagTest(){
         Tag tag = new Tag();
         tag.setTagName("new");
         Mockito.when(tagDao.addTag(tag)).thenReturn(tag);
