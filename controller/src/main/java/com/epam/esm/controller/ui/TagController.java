@@ -1,6 +1,6 @@
 package com.epam.esm.controller.ui;
 
-import com.epam.esm.converter.SearchTagRequest;
+import com.epam.esm.dto.SearchTagRequest;
 import com.epam.esm.exception.UiControllerException;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.exception.LogicException;

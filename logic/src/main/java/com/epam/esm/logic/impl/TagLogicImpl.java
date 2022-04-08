@@ -1,6 +1,6 @@
 package com.epam.esm.logic.impl;
 
-import com.epam.esm.converter.SearchTagRequest;
+import com.epam.esm.dto.SearchTagRequest;
 import com.epam.esm.converter.TagEntityToDtoConverter;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.exception.DaoException;

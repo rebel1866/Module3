@@ -1,11 +1,10 @@
 package com.epam.esm.controller.rest;
 
-import com.epam.esm.converter.SearchTagRequest;
+import com.epam.esm.dto.SearchTagRequest;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.exception.RestControllerException;
 import com.epam.esm.exception.LogicException;
 import com.epam.esm.logic.TagLogic;
-import org.codehaus.jackson.map.util.JSONPObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
