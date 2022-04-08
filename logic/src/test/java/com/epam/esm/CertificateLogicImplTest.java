@@ -1,18 +1,15 @@
 package com.epam.esm;
 
 
-import com.epam.esm.converter.CertificateDtoToEntityConverter;
-import com.epam.esm.converter.CertificateEntityToDtoConverter;
 import com.epam.esm.dao.CertificateDao;
 import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.entity.Certificate;
-import com.epam.esm.entity.Tag;
 import com.epam.esm.dto.SearchCertificateRequest;
 import com.epam.esm.dto.UpdateCertificateRequest;
 import com.epam.esm.exception.DaoException;
 import com.epam.esm.exception.LogicException;
 import com.epam.esm.logic.CertificateLogic;
-import org.junit.Assert;
+import com.epam.esm.testconfig.LogicTestConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +21,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @ExtendWith(SpringExtension.class)
@@ -39,6 +37,8 @@ class CertificateLogicImplTest {
     private CertificateDao certificateDao;
     @Captor
     private ArgumentCaptor<Certificate> captor;
+    @Captor
+    private ArgumentCaptor<Map<String, String>> captorMap;
 
     @Autowired
     public void setCertificateLogic(CertificateLogic certificateLogic) {
@@ -70,60 +70,45 @@ class CertificateLogicImplTest {
     }
 
     @Test
-    public void testFind() throws LogicException {
-        CertificateDto requestAdd = getAddRequest();
-        certificateLogic.addCertificate(requestAdd);
+    public void getCertificatesTest() throws DaoException, LogicException {
         SearchCertificateRequest request = new SearchCertificateRequest();
-        request.setCertificateName("TEST");
-        List<CertificateDto> certificates = certificateLogic.findCertificates(request);
-        Assertions.assertEquals(requestAdd.getCertificateName(), certificates.get(0).getCertificateName());
-
+        request.setCertificateName("test");
+        certificateLogic.findCertificates(request);
+        Mockito.verify(certificateDao).findCertificates(captorMap.capture());
+        Assertions.assertNotNull(captorMap.getValue().get("certificate_name"));
     }
 
     @Test
-    public void testDelete() throws LogicException {
-        CertificateDto requestAdd = getAddRequest();
-        certificateLogic.addCertificate(requestAdd);
-        SearchCertificateRequest request = getRequest();
-        List<CertificateDto> certificates = certificateLogic.findCertificates(request);
-        Assertions.assertEquals("TEST", certificates.get(0).getCertificateName());
-        int id = certificates.get(0).getGiftCertificateId();
-        certificateLogic.deleteCertificate(id);
-        LogicException thrown = Assertions.assertThrows(LogicException.class,
-                () -> certificateLogic.findCertificates(new SearchCertificateRequest()));
-        Assertions.assertEquals("No certificates found", thrown.getMessage());
+    public void getCertificatesByIdTest() throws DaoException, LogicException {
+        Certificate certificate = new Certificate();
+        certificate.setCertificateName("test");
+        Mockito.when(certificateDao.findCertificateById(5)).thenReturn(certificate);
+        Assertions.assertEquals("test", certificateLogic.findCertificateById(5).getCertificateName());
+        LogicException logicException = Assertions.assertThrows(LogicException.class, () -> certificateLogic.findCertificateById(-5));
+        Assertions.assertEquals("messageCode10", logicException.getMessage());
     }
 
     @Test
-    public void testUpdate() throws LogicException {
-        CertificateDto requestAdd = getAddRequest();
-        certificateLogic.addCertificate(requestAdd);
-        SearchCertificateRequest request = getRequest();
-        List<CertificateDto> certificates = certificateLogic.findCertificates(request);
-        Assertions.assertEquals("TEST", certificates.get(0).getCertificateName());
-        int id = certificates.get(0).getGiftCertificateId();
-        UpdateCertificateRequest request1 = new UpdateCertificateRequest();
-        request1.setCertificateName("NEW_TEST");
-        certificateLogic.updateCertificate(request1, id);
-        CertificateDto newCertificate = certificateLogic.findCertificates(new SearchCertificateRequest()).get(0);
-        Assertions.assertEquals("NEW_TEST", newCertificate.getCertificateName());
+    public void deleteCertificateTest() throws LogicException {
+        LogicException logicException = Assertions.assertThrows(LogicException.class, () -> certificateLogic.deleteCertificate(-5));
+        Assertions.assertEquals("messageCode10", logicException.getMessage());
     }
 
-
-    public static CertificateDto getAddRequest() {
-        CertificateDto request = new CertificateDto();
-        request.setCertificateName("TEST");
-        Tag tag = new Tag();
-        tag.setTagId(1);
-        List<Tag> tags = new ArrayList<>();
-        tags.add(tag);
-        request.setTags(tags);
-        return request;
-    }
-
-    public static SearchCertificateRequest getRequest() {
-        SearchCertificateRequest request = new SearchCertificateRequest();
-        request.setCertificateName("TEST");
-        return request;
+    @Test
+    public void testUpdate() throws LogicException, DaoException {
+        UpdateCertificateRequest request = new UpdateCertificateRequest();
+        request.setCertificateName("test");
+        Certificate certificate = new Certificate();
+        certificate.setCertificateName("test");
+        Map<String, String> map = new HashMap<>();
+        map.put("certificateName", "test");
+        Mockito.when(certificateDao.updateCertificate(map, 2)).thenReturn(certificate);
+        CertificateDto dto = certificateLogic.updateCertificate(request, 2);
+        ArgumentCaptor<Integer> captorInt = ArgumentCaptor.forClass(Integer.class);
+        Mockito.verify(certificateDao).updateCertificate(captorMap.capture(), captorInt.capture());
+        Assertions.assertEquals("test", captorMap.getValue().get("certificateName"));
+        LogicException logicException = Assertions.assertThrows(LogicException.class, () -> certificateLogic.updateCertificate(request, -5));
+        Assertions.assertEquals("messageCode10", logicException.getMessage());
+        Assertions.assertEquals(certificate.getCertificateName(), dto.getCertificateName());
     }
 }
