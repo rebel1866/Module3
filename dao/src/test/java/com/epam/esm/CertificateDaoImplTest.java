@@ -47,7 +47,7 @@ public class CertificateDaoImplTest {
 
 
     @Test
-    public void testAddAndSearch() throws DaoException {
+    public void addAndSearchCertificateTest() throws DaoException {
         Certificate certificate = getCertificate();
         certificateDao.addCertificate(certificate);
         Map<String, String> params = new HashMap<>();
@@ -57,7 +57,7 @@ public class CertificateDaoImplTest {
     }
 
     @Test
-    public void testDelete() throws DaoException {
+    public void deleteCertificateTest() throws DaoException {
         Certificate certificate = getCertificate();
         certificateDao.addCertificate(certificate);
         Map<String, String> params = new HashMap<>();
@@ -71,7 +71,7 @@ public class CertificateDaoImplTest {
     }
 
     @Test
-    public void testUpdate() throws DaoException {
+    public void updateCertificateTest() throws DaoException {
         Certificate certificate = getCertificate();
         certificateDao.addCertificate(certificate);
         Map<String, String> params = new HashMap<>();
