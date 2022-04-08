@@ -44,18 +44,43 @@ public class TagDaoImplTest {
     @BeforeEach
     public void before() throws SQLException {
         ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(),
-                new ClassPathResource("scripts.create/certificates_c.sql"));
+                new ClassPathResource("scripts.create/create_db.sql"));
     }
 
     @Test
-    public void addAndSearchTagsTest() throws DaoException {
+    public void addTagTest() throws DaoException {
+        Tag tag = new Tag();
+        tag.setTagName("TEST");
+        Tag addedTag = tagDao.addTag(tag);
+        Assertions.assertEquals("TEST", addedTag.getTagName());
+    }
+
+    @Test
+    public void getTagByParamsAndByIdTest() throws DaoException {
         Tag tag = new Tag();
         tag.setTagName("TEST");
         tagDao.addTag(tag);
         Map<String, String> params = new HashMap<>();
         params.put("tag_name", "TEST");
-        List<Tag> tags = tagDao.findTags(params);
-        Assertions.assertEquals("TEST", tags.get(0).getTagName());
+        Tag derivedTag = tagDao.findTags(params).get(0);
+        Assertions.assertEquals("TEST", derivedTag.getTagName());
+        int id = derivedTag.getTagId();
+        Tag derivedTag2 = tagDao.findTagById(id);
+        Assertions.assertEquals("TEST", derivedTag2.getTagName());
+    }
+
+    @Test
+    public void deleteTagTest() throws DaoException {
+        Tag tag = new Tag();
+        tag.setTagName("TEST");
+        tagDao.addTag(tag);
+        Map<String, String> params = new HashMap<>();
+        params.put("tag_name", "TEST");
+        Tag derivedTag = tagDao.findTags(params).get(0);
+        int id = derivedTag.getTagId();
+        tagDao.deleteTag(id);
+        DaoException thrown = Assertions.assertThrows(DaoException.class, () -> tagDao.findTagById(id));
+        Assertions.assertEquals("messageCode7", thrown.getMessage());
     }
 
     @AfterEach

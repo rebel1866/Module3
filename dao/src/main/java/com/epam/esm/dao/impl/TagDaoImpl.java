@@ -17,7 +17,7 @@ import java.util.Objects;
 @Repository
 public class TagDaoImpl implements TagDao {
     private JdbcTemplate jdbcTemplate;
-    private static final String tagSQL = "select tag_name, tag_id from tags";
+    private static final String tagSQL = "select tag_name, tag_id from gifts.tags";
     private static final String addTagSql = "insert into gifts.tags (tag_name) values (?)";
     private static final String deleteTagSql = "delete from gifts.tags where tag_id =?";
     private static final String findByIdSql = "select * from gifts.tags where tag_id =?";

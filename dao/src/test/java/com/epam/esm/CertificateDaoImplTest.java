@@ -42,7 +42,9 @@ public class CertificateDaoImplTest {
     @BeforeEach
     public void before() throws SQLException {
         ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(),
-                new ClassPathResource("scripts.create/certificates_c.sql"));
+                new ClassPathResource("scripts.create/create_db.sql"));
+        ScriptUtils.executeSqlScript(jdbcTemplate.getDataSource().getConnection(),
+                new ClassPathResource("scripts.create/insert_tag.sql"));
     }
 
 
