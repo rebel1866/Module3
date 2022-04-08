@@ -99,4 +99,18 @@ public class CertificateDto {
     public void setLastUpdateTime(LocalDateTime lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
     }
+
+    @Override
+    public String toString() {
+        return "CertificateDto{" +
+                "giftCertificateId=" + giftCertificateId +
+                ", certificateName='" + certificateName + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", duration=" + duration +
+                ", tags=" + tags +
+                ", creationDate=" + creationDate +
+                ", lastUpdateTime=" + lastUpdateTime +
+                '}';
+    }
 }
