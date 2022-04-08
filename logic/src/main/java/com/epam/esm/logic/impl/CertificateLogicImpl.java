@@ -14,6 +14,7 @@ import com.epam.esm.converter.ObjectToMapConverter;
 import com.google.common.base.CaseFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -33,6 +34,7 @@ public class CertificateLogicImpl implements CertificateLogic {
     }
 
     @Override
+    @Transactional
     public List<CertificateDto> findCertificates(SearchCertificateRequest request) throws LogicException {
         Map<String, String> params = ObjectToMapConverter.convertToMap(request);
         var iterator = params.entrySet().iterator();
@@ -53,6 +55,7 @@ public class CertificateLogicImpl implements CertificateLogic {
     }
 
     @Override
+    @Transactional
     public CertificateDto findCertificateById(int id) throws LogicException {
         validateId(id);
         try {
@@ -64,6 +67,7 @@ public class CertificateLogicImpl implements CertificateLogic {
     }
 
     @Override
+    @Transactional
     public CertificateDto addCertificate(CertificateDto request) throws LogicException {
         Certificate certificate = CertificateDtoToEntityConverter.convert(request);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimePattern);
@@ -90,6 +94,7 @@ public class CertificateLogicImpl implements CertificateLogic {
     }
 
     @Override
+    @Transactional
     public CertificateDto updateCertificate(UpdateCertificateRequest request, int id) throws LogicException {
         validateId(id);
         Map<String, String> params = ObjectToMapConverter.convertToMap(request);

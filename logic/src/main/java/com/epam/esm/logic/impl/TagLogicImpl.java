@@ -12,6 +12,7 @@ import com.epam.esm.converter.ObjectToMapConverter;
 import com.google.common.base.CaseFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +60,7 @@ public class TagLogicImpl implements TagLogic {
     }
 
     @Override
+    @Transactional
     public TagDto addTag(String tagName) throws LogicException {
         Tag tag = new Tag(tagName);
         Tag addedTag;

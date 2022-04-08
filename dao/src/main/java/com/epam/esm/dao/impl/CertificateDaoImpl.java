@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -42,7 +41,6 @@ public class CertificateDaoImpl implements CertificateDao {
     }
 
     @Override
-    @Transactional
     public List<Certificate> findCertificates(Map<String, String> params) throws DaoException {
         String targetSql = SqlGenerator.generateSQL(certificatesSQL, params);
         List<Certificate> certificates = jdbcTemplate.query(targetSql, new CertificateMapper());
@@ -60,7 +58,6 @@ public class CertificateDaoImpl implements CertificateDao {
 
 
     @Override
-    @Transactional
     public Certificate findCertificateById(int id) throws DaoException {
         Certificate certificate;
         try {
@@ -74,7 +71,6 @@ public class CertificateDaoImpl implements CertificateDao {
     }
 
     @Override
-    @Transactional
     public Certificate addCertificate(Certificate certificate) throws DaoException {
         int rowAffected = jdbcTemplate.update(addCertificateSQL, certificate.getCertificateName(),
                 certificate.getDescription(), certificate.getPrice(), certificate.getDuration(),
@@ -99,7 +95,6 @@ public class CertificateDaoImpl implements CertificateDao {
     }
 
     @Override
-    @Transactional
     public Certificate updateCertificate(Map<String, String> params, int id) throws DaoException {
         String targetSql = SqlGenerator.generateUpdateSql(params, updateSql);
         int rowAffected = jdbcTemplate.update(targetSql, id);

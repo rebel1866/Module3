@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -51,7 +50,6 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    @Transactional
     public Tag addTag(Tag tag) throws DaoException {
         int rowsAffected = jdbcTemplate.update(addTagSql, tag.getTagName());
         if (rowsAffected == 0) {
