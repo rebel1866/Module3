@@ -40,7 +40,7 @@ public class CertificateRestController {
     @PostMapping(value = "/certificates", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.CREATED)
     public CertificateDto addCertificate(@RequestBody @Valid CertificateDto request,
-                                         BindingResult bindingResult){
+                                         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new RestControllerException("messageCode11", "errorCode=3", bindingResult);
         }
@@ -49,7 +49,7 @@ public class CertificateRestController {
 
     @DeleteMapping(value = "/certificates/{id}", consumes = {"application/json"}, produces = {"application/json"})
     @ResponseStatus(HttpStatus.OK)
-    public void deleteCertificate(@PathVariable("id") int id){
+    public void deleteCertificate(@PathVariable("id") int id) {
         certificateLogic.deleteCertificate(id);
     }
 

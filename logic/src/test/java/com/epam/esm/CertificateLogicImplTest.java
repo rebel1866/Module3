@@ -6,7 +6,6 @@ import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.entity.Certificate;
 import com.epam.esm.dto.SearchCertificateRequest;
 import com.epam.esm.dto.UpdateCertificateRequest;
-import com.epam.esm.exception.DaoException;
 import com.epam.esm.exception.LogicException;
 import com.epam.esm.logic.CertificateLogic;
 import com.epam.esm.testconfig.LogicTestConfig;
@@ -71,7 +70,7 @@ class CertificateLogicImplTest {
     }
 
     @Test
-    public void getCertificatesTest(){
+    public void getCertificatesTest() {
         SearchCertificateRequest request = new SearchCertificateRequest();
         request.setCertificateName("test");
         certificateLogic.findCertificates(request);
@@ -97,7 +96,7 @@ class CertificateLogicImplTest {
     }
 
     @Test
-    public void testUpdate(){
+    public void testUpdate() {
         UpdateCertificateRequest request = new UpdateCertificateRequest();
         request.setCertificateName("test");
         Certificate certificate = new Certificate();
@@ -105,10 +104,10 @@ class CertificateLogicImplTest {
         certificate.setTags(new ArrayList<>());
         Map<String, String> map = new HashMap<>();
         map.put("certificateName", "test");
-        Mockito.when(certificateDao.updateCertificate(map, 2)).thenReturn(certificate);
+        Mockito.when(certificateDao.updateCertificate(map, 2, new ArrayList<>())).thenReturn(certificate);
         CertificateDto dto = certificateLogic.updateCertificate(request, 2);
         ArgumentCaptor<Integer> captorInt = ArgumentCaptor.forClass(Integer.class);
-        Mockito.verify(certificateDao).updateCertificate(captorMap.capture(), captorInt.capture());
+        Mockito.verify(certificateDao).updateCertificate(captorMap.capture(), captorInt.capture(), new ArrayList<>());
         Assertions.assertEquals("test", captorMap.getValue().get("certificateName"));
         LogicException logicException = Assertions.assertThrows(LogicException.class, () -> certificateLogic.updateCertificate(request, -5));
         Assertions.assertEquals("messageCode10", logicException.getMessage());

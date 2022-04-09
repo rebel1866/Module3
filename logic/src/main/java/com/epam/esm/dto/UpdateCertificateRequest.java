@@ -1,6 +1,8 @@
 package com.epam.esm.dto;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 public class UpdateCertificateRequest {
     @Pattern(regexp = "[A-Za-zА-Яа-я ]+", message = "rCode15")
@@ -11,6 +13,8 @@ public class UpdateCertificateRequest {
     private String price;
     @Pattern(regexp = "^[1-9]+[0-9]*$", message = "rCode1")
     private String duration;
+    @Valid
+    private List<TagDto> tags;
 
     public String getCertificateName() {
         return certificateName;
@@ -42,5 +46,13 @@ public class UpdateCertificateRequest {
 
     public void setDuration(String duration) {
         this.duration = duration;
+    }
+
+    public List<TagDto> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<TagDto> tags) {
+        this.tags = tags;
     }
 }

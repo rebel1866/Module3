@@ -83,7 +83,7 @@ public class CertificateDaoImplTest {
         int id = certificates.get(0).getGiftCertificateId();
         Map<String, String> updateParams = new HashMap<>();
         updateParams.put("certificate_name", "NEW_TEST");
-        certificateDao.updateCertificate(updateParams, id);
+        certificateDao.updateCertificate(updateParams, id, new ArrayList<>());
         Certificate newCertificate = certificateDao.findCertificates(new HashMap<>()).get(0);
         Assertions.assertEquals("NEW_TEST", newCertificate.getCertificateName());
     }

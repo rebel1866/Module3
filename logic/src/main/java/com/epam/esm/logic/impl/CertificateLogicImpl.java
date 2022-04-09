@@ -1,20 +1,16 @@
 package com.epam.esm.logic.impl;
 
-import com.epam.esm.converter.CertificateDtoToEntityConverter;
-import com.epam.esm.converter.CertificateEntityToDtoConverter;
+import com.epam.esm.converter.*;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.SearchCertificateRequest;
 import com.epam.esm.dto.TagDto;
 import com.epam.esm.dto.UpdateCertificateRequest;
 import com.epam.esm.entity.Tag;
-import com.epam.esm.exception.DaoException;
 import com.epam.esm.dao.CertificateDao;
 import com.epam.esm.entity.Certificate;
 import com.epam.esm.exception.LogicException;
 import com.epam.esm.logic.CertificateLogic;
-import com.epam.esm.converter.ObjectToMapConverter;
-import com.epam.esm.logic.TagLogic;
 import com.google.common.base.CaseFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -95,16 +91,11 @@ public class CertificateLogicImpl implements CertificateLogic {
     @Transactional
     public CertificateDto updateCertificate(UpdateCertificateRequest request, int id) {
         validateId(id);
-        Map<String, String> params = ObjectToMapConverter.convertToMap(request);
+        List<Tag> tags = TagDtoToEntityConverter.convertList(request.getTags());
+        Map<String, String> params = UpdateDtoToMapConverter.convertToMap(request);
         Certificate certificate;
-        certificate = certificateDao.updateCertificate(params, id);
+        certificate = certificateDao.updateCertificate(params, id, tags);
         return CertificateEntityToDtoConverter.convert(certificate);
-    }
-
-    private void validateId(int id) {
-        if (id <= 0) {
-            throw new LogicException("messageCode10", "errorCode=3");
-        }
     }
 
     public List<Tag> getNewTagsToAdd(List<Tag> allTags) {
@@ -121,5 +112,11 @@ public class CertificateLogicImpl implements CertificateLogic {
             }
         }
         return newTags;
+    }
+
+    private void validateId(int id) {
+        if (id <= 0) {
+            throw new LogicException("messageCode10", "errorCode=3");
+        }
     }
 }
