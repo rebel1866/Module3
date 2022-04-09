@@ -104,10 +104,10 @@ class CertificateLogicImplTest {
         certificate.setTags(new ArrayList<>());
         Map<String, String> map = new HashMap<>();
         map.put("certificateName", "test");
-        Mockito.when(certificateDao.updateCertificate(map, 2, new ArrayList<>())).thenReturn(certificate);
+        Mockito.when(certificateDao.updateCertificate(map, 2)).thenReturn(certificate);
         CertificateDto dto = certificateLogic.updateCertificate(request, 2);
         ArgumentCaptor<Integer> captorInt = ArgumentCaptor.forClass(Integer.class);
-        Mockito.verify(certificateDao).updateCertificate(captorMap.capture(), captorInt.capture(), new ArrayList<>());
+        Mockito.verify(certificateDao).updateCertificate(captorMap.capture(), captorInt.capture());
         Assertions.assertEquals("test", captorMap.getValue().get("certificateName"));
         LogicException logicException = Assertions.assertThrows(LogicException.class, () -> certificateLogic.updateCertificate(request, -5));
         Assertions.assertEquals("messageCode10", logicException.getMessage());

@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 @Repository
 public class CertificateDaoImpl implements CertificateDao {
     private JdbcTemplate jdbcTemplate;
-    private TagDao tagDao;
     private static final String certificatesSQL = "select f.gift_certificate_id, certificate_name, price, duration, " +
             "creation_date, last_update_time, description from gifts.gift_certificates as f inner join gifts.cert_tags as s " +
             "on s.gift_certificate_id = f.gift_certificate_id inner join gifts.tags as t on t.tag_id = s.tag_id";
@@ -37,18 +36,12 @@ public class CertificateDaoImpl implements CertificateDao {
     private static final String findByIdSql = "select * from gifts.gift_certificates where gift_certificate_id =?";
     private static final String lastIdSql = "select max(gift_certificate_id) as max from gifts.gift_certificates";
     private static final String TAG_BY_ID = "select * from gifts.tags where tag_id=?";
-    private static final String ADD_TAGS_OF_CERTIFICATE = "insert into gifts.cert_tags (gift_certificate_id, tag_id) " +
-            "values (?,?)";
 
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Autowired
-    public void setTagDao(TagDao tagDao) {
-        this.tagDao = tagDao;
-    }
 
     @Override
     public List<Certificate> findCertificates(Map<String, String> params) {
@@ -111,15 +104,11 @@ public class CertificateDaoImpl implements CertificateDao {
     }
 
     @Override
-    public Certificate updateCertificate(Map<String, String> params, int id, List<Tag> tags) {
+    public Certificate updateCertificate(Map<String, String> params, int id) {
         String targetSql = SqlGenerator.generateUpdateSql(params, updateSql);
         int rowAffected = jdbcTemplate.update(targetSql, id);
         if (rowAffected == 0) {
             throw new DaoException("messageCode5", "errorCode=3");
-        }
-        if (tags.size() != 0) {
-            List<Tag> tagsWithId = tags.stream().map(tag -> tagDao.addTag(tag)).collect(Collectors.toList());
-            tagsWithId.forEach(tag -> jdbcTemplate.update(ADD_TAGS_OF_CERTIFICATE, id, tag.getTagId()));
         }
         return findCertificateById(id);
     }

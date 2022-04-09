@@ -1,6 +1,5 @@
 package com.epam.esm.dao;
 
-import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.DaoException;
 import com.epam.esm.entity.Certificate;
 
@@ -13,7 +12,7 @@ public interface CertificateDao {
 
     void deleteCertificate(int id) throws DaoException;
 
-    Certificate updateCertificate(Map<String, String> params, int id, List<Tag> tags) throws DaoException;
+    Certificate updateCertificate(Map<String, String> params, int id) throws DaoException;
 
     Certificate findCertificateById(int id) throws DaoException;
 }

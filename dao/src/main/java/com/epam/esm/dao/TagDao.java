@@ -14,5 +14,5 @@ public interface TagDao {
     void deleteTag(int id) throws DaoException;
 
     Tag findTagById(int id) throws DaoException;
-    void addTagsOfCertificate(List<Tag> tags);
+    void addTagToCertificate(Tag tag, int certificateId);
 }

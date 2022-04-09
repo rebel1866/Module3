@@ -4,7 +4,6 @@ import com.epam.esm.converter.*;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.dto.CertificateDto;
 import com.epam.esm.dto.SearchCertificateRequest;
-import com.epam.esm.dto.TagDto;
 import com.epam.esm.dto.UpdateCertificateRequest;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.dao.CertificateDao;
@@ -75,10 +74,13 @@ public class CertificateLogicImpl implements CertificateLogic {
         List<Tag> newTags = getNewTagsToAdd(certificate.getTags());
         Certificate addedCertificate;
         addedCertificate = certificateDao.addCertificate(certificate);
+        int certificateId = addedCertificate.getGiftCertificateId();
         List<Tag> tagsThatExist = newTags.stream().map(l -> tagDao.addTag(l)).collect(Collectors.toList());
-        tagDao.addTagsOfCertificate(tagsThatExist);
-        addedCertificate.getTags().addAll(tagsThatExist);
-        return CertificateEntityToDtoConverter.convert(addedCertificate);
+        for (Tag tag : tagsThatExist) {
+            tagDao.addTagToCertificate(tag, certificateId);
+        }
+        Certificate targetCertificate = certificateDao.findCertificateById(certificateId);
+        return CertificateEntityToDtoConverter.convert(targetCertificate);
     }
 
     @Override
@@ -93,8 +95,12 @@ public class CertificateLogicImpl implements CertificateLogic {
         validateId(id);
         List<Tag> tags = TagDtoToEntityConverter.convertList(request.getTags());
         Map<String, String> params = UpdateDtoToMapConverter.convertToMap(request);
-        Certificate certificate;
-        certificate = certificateDao.updateCertificate(params, id, tags);
+        certificateDao.updateCertificate(params, id);
+        if (tags.size() != 0) {
+            List<Tag> tagsWithId = tags.stream().map(tag -> tagDao.addTag(tag)).collect(Collectors.toList());
+            tagsWithId.forEach(tag -> tagDao.addTagToCertificate(tag, id));
+        }
+        Certificate certificate = certificateDao.findCertificateById(id);
         return CertificateEntityToDtoConverter.convert(certificate);
     }
 
