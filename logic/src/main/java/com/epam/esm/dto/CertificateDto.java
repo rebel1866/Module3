@@ -27,7 +27,7 @@ public class CertificateDto {
     private Integer duration;
     @Valid
     @NotNull(message = "rCode11")
-    private List<Tag> tags;
+    private List<TagDto> tags;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime creationDate;
@@ -76,11 +76,11 @@ public class CertificateDto {
         this.duration = duration;
     }
 
-    public List<Tag> getTags() {
+    public List<TagDto> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(List<TagDto> tags) {
         this.tags = tags;
     }
 
