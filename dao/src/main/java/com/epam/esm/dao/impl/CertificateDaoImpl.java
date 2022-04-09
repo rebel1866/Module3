@@ -34,6 +34,7 @@ public class CertificateDaoImpl implements CertificateDao {
     private static final String updateSql = "update gifts.gift_certificates set where gift_certificate_id=?";
     private static final String findByIdSql = "select * from gifts.gift_certificates where gift_certificate_id =?";
     private static final String lastIdSql = "select max(gift_certificate_id) as max from gifts.gift_certificates";
+    private static final String TAG_BY_ID = "select * from gifts.tags where tag_id=?";
 
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
@@ -80,14 +81,20 @@ public class CertificateDaoImpl implements CertificateDao {
         }
         List<Tag> tags = certificate.getTags();
         for (Tag tag : tags) {
-            jdbcTemplate.update(addCertificateTagsSQL, tag.getTagId());
+            int id = tag.getTagId();
+            try {
+                jdbcTemplate.queryForObject(TAG_BY_ID, new TagMapper(), id);
+            } catch (EmptyResultDataAccessException e) {
+                throw new DaoException("messageCode14", "errorCode=2");
+            }
+            jdbcTemplate.update(addCertificateTagsSQL, id);
         }
         int id = getLastId();
         return findCertificateById(id);
     }
 
     @Override
-    public void deleteCertificate(int id){
+    public void deleteCertificate(int id) {
         int rowAffected = jdbcTemplate.update(removeCertificateSql, id);
         if (rowAffected == 0) {
             throw new DaoException("messageCode4", "errorCode=3");

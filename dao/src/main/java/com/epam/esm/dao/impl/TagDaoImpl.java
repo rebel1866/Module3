@@ -23,6 +23,8 @@ public class TagDaoImpl implements TagDao {
     private static final String findByIdSql = "select * from gifts.tags where tag_id =?";
     private static final String lastIdSql = "select max(tag_id) as max from gifts.tags";
     private static final String SEARCH_BY_NAME_SQL = "select tag_name, tag_id from gifts.tags where tag_name=?";
+    private static final String addCertificateTagsSQL = "insert into gifts.cert_tags (gift_certificate_id, tag_id) " +
+            "values ((select gift_certificate_id from gifts.gift_certificates order by gift_certificate_id desc limit 1),?)";
 
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
@@ -52,6 +54,9 @@ public class TagDaoImpl implements TagDao {
 
     @Override
     public Tag addTag(Tag tag) {
+        if (isTagExist(tag)) {
+            throw new DaoException("messageCode12", "errorCode=3");
+        }
         int rowsAffected = jdbcTemplate.update(addTagSql, tag.getTagName());
         if (rowsAffected == 0) {
             throw new DaoException("messageCode8", "errorCode=2");
@@ -69,13 +74,19 @@ public class TagDaoImpl implements TagDao {
     }
 
     @Override
-    public boolean isTagExist(Tag tag) {
-        List<Tag> tags = jdbcTemplate.query(SEARCH_BY_NAME_SQL, new TagMapper(), tag.getTagName());
-        return tags.size() > 0;
+    public void addTagsOfCertificate(List<Tag> tags) {
+        for (Tag tag : tags) {
+            jdbcTemplate.update(addCertificateTagsSQL, tag.getTagId());
+        }
     }
 
     private int getLastId() {
         Integer value = jdbcTemplate.queryForObject(lastIdSql, Integer.class);
         return Objects.requireNonNullElse(value, 0);
+    }
+
+    public boolean isTagExist(Tag tag) {
+        List<Tag> tags = jdbcTemplate.query(SEARCH_BY_NAME_SQL, new TagMapper(), tag.getTagName());
+        return tags.size() > 0;
     }
 }

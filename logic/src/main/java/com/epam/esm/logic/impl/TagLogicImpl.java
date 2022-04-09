@@ -57,10 +57,6 @@ public class TagLogicImpl implements TagLogic {
             throw new LogicException("rCode17", "errorCode=3");
         }
         Tag tag = new Tag(tagName);
-        boolean isExist = tagDao.isTagExist(tag);
-        if (isExist) {
-            throw new LogicException("messageCode12", "errorCode=3");
-        }
         Tag addedTag;
         addedTag = tagDao.addTag(tag);
         return TagEntityToDtoConverter.convert(addedTag);

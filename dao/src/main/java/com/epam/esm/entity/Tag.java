@@ -5,18 +5,18 @@ import java.util.Objects;
 
 public class Tag implements Serializable {
     private static final long SerialVersionUID = 654654654564545L;
-    private int tagId;
+    private Integer tagId;
     private String tagName;
 
     public Tag(String tagName) {
         this.tagName = tagName;
     }
 
-    public int getTagId() {
+    public Integer getTagId() {
         return tagId;
     }
 
-    public void setTagId(int tagId) {
+    public void setTagId(Integer tagId) {
         this.tagId = tagId;
     }
 
