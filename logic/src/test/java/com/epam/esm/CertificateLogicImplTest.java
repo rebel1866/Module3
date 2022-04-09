@@ -61,6 +61,7 @@ class CertificateLogicImplTest {
         certificateDto.setTags(new ArrayList<>());
         Certificate c = new Certificate();
         c.setCertificateName("test");
+        c.setTags(new ArrayList<>());
         Mockito.when(certificateDao.addCertificate(Mockito.any(Certificate.class))).thenReturn(c);
         CertificateDto newDto = certificateLogic.addCertificate(certificateDto);
         Assertions.assertEquals("test", newDto.getCertificateName());
@@ -82,6 +83,7 @@ class CertificateLogicImplTest {
     public void getCertificatesByIdTest() {
         Certificate certificate = new Certificate();
         certificate.setCertificateName("test");
+        certificate.setTags(new ArrayList<>());
         Mockito.when(certificateDao.findCertificateById(5)).thenReturn(certificate);
         Assertions.assertEquals("test", certificateLogic.findCertificateById(5).getCertificateName());
         LogicException logicException = Assertions.assertThrows(LogicException.class, () -> certificateLogic.findCertificateById(-5));
@@ -100,6 +102,7 @@ class CertificateLogicImplTest {
         request.setCertificateName("test");
         Certificate certificate = new Certificate();
         certificate.setCertificateName("test");
+        certificate.setTags(new ArrayList<>());
         Map<String, String> map = new HashMap<>();
         map.put("certificateName", "test");
         Mockito.when(certificateDao.updateCertificate(map, 2)).thenReturn(certificate);
