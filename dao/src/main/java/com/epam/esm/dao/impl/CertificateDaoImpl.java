@@ -1,6 +1,5 @@
 package com.epam.esm.dao.impl;
 
-import com.epam.esm.dao.TagDao;
 import com.epam.esm.exception.DaoException;
 import com.epam.esm.dao.CertificateDao;
 import com.epam.esm.mapper.CertificateMapper;
@@ -31,11 +30,11 @@ public class CertificateDaoImpl implements CertificateDao {
             "duration, creation_date, last_update_time) values (?,?,?,?,?,?)";
     private static final String addCertificateTagsSQL = "insert into gifts.cert_tags (gift_certificate_id, tag_id) " +
             "values ((select gift_certificate_id from gifts.gift_certificates order by gift_certificate_id desc limit 1),?)";
-    private static final String removeCertificateSql = "delete from gifts.gift_certificates where gift_certificate_id = ?";
-    private static final String updateSql = "update gifts.gift_certificates set where gift_certificate_id=?";
-    private static final String findByIdSql = "select * from gifts.gift_certificates where gift_certificate_id =?";
-    private static final String lastIdSql = "select max(gift_certificate_id) as max from gifts.gift_certificates";
-    private static final String TAG_BY_ID = "select * from gifts.tags where tag_id=?";
+    private static final String REMOVE_CERTIFICATE_SQL = "delete from gifts.gift_certificates where gift_certificate_id = ?";
+    private static final String UPDATE_SQL = "update gifts.gift_certificates set where gift_certificate_id=?";
+    private static final String FIND_BY_ID_SQL = "select * from gifts.gift_certificates where gift_certificate_id =?";
+    private static final String LAST_ID_SQL = "select max(gift_certificate_id) as max from gifts.gift_certificates";
+    private static final String COUNT_TAGS_BY_ID = "select count(*) from gifts.tags where tag_id =?";
 
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
@@ -64,7 +63,7 @@ public class CertificateDaoImpl implements CertificateDao {
     public Certificate findCertificateById(int id) {
         Certificate certificate;
         try {
-            certificate = jdbcTemplate.queryForObject(findByIdSql, new CertificateMapper(), id);
+            certificate = jdbcTemplate.queryForObject(FIND_BY_ID_SQL, new CertificateMapper(), id);
         } catch (EmptyResultDataAccessException e) {
             throw new DaoException("messageCode2", "errorCode=1");
         }
@@ -84,12 +83,11 @@ public class CertificateDaoImpl implements CertificateDao {
         List<Tag> tags = certificate.getTags();
         for (Tag tag : tags) {
             int id = tag.getTagId();
-            try {
-                jdbcTemplate.queryForObject(TAG_BY_ID, new TagMapper(), id);
-            } catch (EmptyResultDataAccessException e) {
+            int amount = jdbcTemplate.queryForObject(COUNT_TAGS_BY_ID, int.class, id);
+            if (amount == 0) {
                 throw new DaoException("messageCode14", "errorCode=2");
             }
-            jdbcTemplate.update(addCertificateTagsSQL, id);
+            jdbcTemplate.update(addCertificateTagsSQL, id);//to service
         }
         int id = getLastId();
         return findCertificateById(id);
@@ -97,7 +95,7 @@ public class CertificateDaoImpl implements CertificateDao {
 
     @Override
     public void deleteCertificate(int id) {
-        int rowAffected = jdbcTemplate.update(removeCertificateSql, id);
+        int rowAffected = jdbcTemplate.update(REMOVE_CERTIFICATE_SQL, id);
         if (rowAffected == 0) {
             throw new DaoException("messageCode4", "errorCode=3");
         }
@@ -105,7 +103,7 @@ public class CertificateDaoImpl implements CertificateDao {
 
     @Override
     public Certificate updateCertificate(Map<String, String> params, int id) {
-        String targetSql = SqlGenerator.generateUpdateSql(params, updateSql);
+        String targetSql = SqlGenerator.generateUpdateSql(params, UPDATE_SQL);
         int rowAffected = jdbcTemplate.update(targetSql, id);
         if (rowAffected == 0) {
             throw new DaoException("messageCode5", "errorCode=3");
@@ -114,7 +112,7 @@ public class CertificateDaoImpl implements CertificateDao {
     }
 
     private int getLastId() {
-        Integer value = jdbcTemplate.queryForObject(lastIdSql, Integer.class);
+        Integer value = jdbcTemplate.queryForObject(LAST_ID_SQL, Integer.class);
         return Objects.requireNonNullElse(value, 0);
     }
 }
