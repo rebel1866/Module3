@@ -63,7 +63,17 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
 
     public ResponseEntity<String> handle(Exception exception, String errorCode, HttpServletRequest request) {
         HttpStatus status = CODES_AND_STATUSES.get(errorCode);
-        String localizedMessage = getLocalizedMessage(exception.getMessage(), request);
+        String exceptionMessage = exception.getMessage();
+        String localizedMessage;
+        if (exceptionMessage.startsWith("W")) {
+            String[] messageArray = exceptionMessage.split(":");
+            String messageBody = messageArray[0];
+            String messageMeta = messageArray[1];
+            localizedMessage = getLocalizedMessage(messageBody, request);
+            localizedMessage = localizedMessage + ": " + messageMeta;
+        } else {
+            localizedMessage = getLocalizedMessage(exception.getMessage(), request);
+        }
         ErrorMessage errorMessage = new ErrorMessage(localizedMessage, errorCode,
                 status, localizedMessage);
         try {

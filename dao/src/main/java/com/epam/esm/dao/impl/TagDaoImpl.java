@@ -47,7 +47,7 @@ public class TagDaoImpl implements TagDao {
         try {
             tag = jdbcTemplate.queryForObject(FIND_BY_ID_SQL, new TagMapper(), id);
         } catch (EmptyResultDataAccessException e) {
-            throw new DaoException("messageCode7", "errorCode=1");
+            throw new DaoException("WmessageCode7:" + id, "errorCode=1");
         }
         return tag;
     }
@@ -55,7 +55,7 @@ public class TagDaoImpl implements TagDao {
     @Override
     public Tag addTag(Tag tag) {
         if (isTagExist(tag)) {
-            throw new DaoException("messageCode12", "errorCode=3");
+            throw new DaoException("WmessageCode12:" + tag.getTagName(), "errorCode=3");
         }
         int rowsAffected = jdbcTemplate.update(ADD_TAG_SQL, tag.getTagName());
         if (rowsAffected == 0) {

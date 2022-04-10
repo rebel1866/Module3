@@ -79,7 +79,7 @@ public class TagDaoImplTest {
         int id = derivedTag.getTagId();
         tagDao.deleteTag(id);
         DaoException thrown = Assertions.assertThrows(DaoException.class, () -> tagDao.findTagById(id));
-        Assertions.assertEquals("messageCode7", thrown.getMessage());
+        Assertions.assertEquals("WmessageCode7:1", thrown.getMessage());
     }
 
     @AfterEach

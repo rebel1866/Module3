@@ -61,6 +61,8 @@ class CertificateLogicImplTest {
         Certificate c = new Certificate();
         c.setCertificateName("test");
         c.setTags(new ArrayList<>());
+        c.setGiftCertificateId(1);
+        Mockito.when(certificateDao.findCertificateById(1)).thenReturn(c);
         Mockito.when(certificateDao.addCertificate(Mockito.any(Certificate.class))).thenReturn(c);
         CertificateDto newDto = certificateLogic.addCertificate(certificateDto);
         Assertions.assertEquals("test", newDto.getCertificateName());
@@ -96,19 +98,20 @@ class CertificateLogicImplTest {
     }
 
     @Test
-    public void testUpdate() {
+    public void updateCertificateTest() {
         UpdateCertificateRequest request = new UpdateCertificateRequest();
         request.setCertificateName("test");
         Certificate certificate = new Certificate();
         certificate.setCertificateName("test");
         certificate.setTags(new ArrayList<>());
         Map<String, String> map = new HashMap<>();
-        map.put("certificateName", "test");
+        map.put("certificate_name", "test");
+        Mockito.when(certificateDao.findCertificateById(2)).thenReturn(certificate);
         Mockito.when(certificateDao.updateCertificate(map, 2)).thenReturn(certificate);
         CertificateDto dto = certificateLogic.updateCertificate(request, 2);
         ArgumentCaptor<Integer> captorInt = ArgumentCaptor.forClass(Integer.class);
         Mockito.verify(certificateDao).updateCertificate(captorMap.capture(), captorInt.capture());
-        Assertions.assertEquals("test", captorMap.getValue().get("certificateName"));
+        Assertions.assertEquals("test", captorMap.getValue().get("certificate_name"));
         LogicException logicException = Assertions.assertThrows(LogicException.class, () -> certificateLogic.updateCertificate(request, -5));
         Assertions.assertEquals("messageCode10", logicException.getMessage());
         Assertions.assertEquals(certificate.getCertificateName(), dto.getCertificateName());

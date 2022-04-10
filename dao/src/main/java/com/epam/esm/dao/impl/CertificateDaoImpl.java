@@ -65,7 +65,7 @@ public class CertificateDaoImpl implements CertificateDao {
         try {
             certificate = jdbcTemplate.queryForObject(FIND_BY_ID_SQL, new CertificateMapper(), id);
         } catch (EmptyResultDataAccessException e) {
-            throw new DaoException("messageCode2", "errorCode=1");
+            throw new DaoException("WmessageCode2:" + id, "errorCode=1");
         }
         List<Tag> tags = jdbcTemplate.query(FIND_TAGS_BY_ID_SQL, new TagMapper(), id);
         certificate.setTags(tags);
@@ -85,7 +85,7 @@ public class CertificateDaoImpl implements CertificateDao {
             int id = tag.getTagId();
             int amount = jdbcTemplate.queryForObject(COUNT_TAGS_BY_ID, int.class, id);
             if (amount == 0) {
-                throw new DaoException("messageCode14", "errorCode=2");
+                throw new DaoException("WmessageCode14:" + id, "errorCode=2");
             }
             jdbcTemplate.update(ADD_CERTIFICATE_TAGS_SQL, id);//to service
         }
@@ -97,7 +97,7 @@ public class CertificateDaoImpl implements CertificateDao {
     public void deleteCertificate(int id) {
         int rowAffected = jdbcTemplate.update(REMOVE_CERTIFICATE_SQL, id);
         if (rowAffected == 0) {
-            throw new DaoException("messageCode4", "errorCode=3");
+            throw new DaoException("WmessageCode4:" + id, "errorCode=3");
         }
     }
 
@@ -106,7 +106,7 @@ public class CertificateDaoImpl implements CertificateDao {
         String targetSql = SqlGenerator.generateUpdateSql(params, UPDATE_SQL);
         int rowAffected = jdbcTemplate.update(targetSql, id);
         if (rowAffected == 0) {
-            throw new DaoException("messageCode5", "errorCode=3");
+            throw new DaoException("WmessageCode5:" + id, "errorCode=3");
         }
         return findCertificateById(id);
     }
