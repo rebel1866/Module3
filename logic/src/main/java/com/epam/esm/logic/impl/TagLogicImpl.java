@@ -8,6 +8,7 @@ import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.LogicException;
 import com.epam.esm.logic.TagLogic;
 import com.epam.esm.converter.ObjectToMapConverter;
+import com.epam.esm.validation.Validation;
 import com.google.common.base.CaseFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,10 @@ public class TagLogicImpl implements TagLogic {
     @Override
     public List<TagDto> findTags(SearchTagRequest request) {
         Map<String, String> params = ObjectToMapConverter.convertToMap(request);
+        String tagName = params.get("tagName");
+        if (tagName != null) {
+            Validation.validateTagName(tagName);
+        }
         var iterator = params.entrySet().iterator();
         Map<String, String> newParams = new HashMap<>();
         while (iterator.hasNext()) {

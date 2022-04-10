@@ -1,13 +1,13 @@
 package com.epam.esm.dto;
 
 
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 public class TagDto {
     @Positive(message = "messageCode10")
     private Integer tagId;
-    @Pattern(regexp = "[A-Za-zА-Яа-я ]+", message = "rCode17")
+    @Size(min = 1,message = "rCode17")
     private String tagName;
 
     public Integer getTagId() {

@@ -1,13 +1,13 @@
 package com.epam.esm.dto;
 
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 
 public class SearchCertificateRequest {
-    @Pattern(regexp = "[A-Za-zА-Яа-я]+",message = "rCode13")
+    @Size(min = 1,message = "rCode13")
     private String certificateName;
-    @Pattern(regexp = "[A-Za-zА-Яа-я]+",message = "rCode14")
+    @Size(min = 1,message = "rCode14")
     private String tagName;
     @Pattern(regexp = "^[1-9]+[0-9]*$",message = "rCode2")
     private String priceFrom;

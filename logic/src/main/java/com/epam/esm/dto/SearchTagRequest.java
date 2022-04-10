@@ -1,9 +1,11 @@
 package com.epam.esm.dto;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 public class SearchTagRequest {
-    @Pattern(regexp = "[A-Za-zА-Яа-я ]+", message = "rCode17")
+    @Size(min = 1,message = "rCode17")
     private String tagName;
     @Pattern(regexp = "tagId|tagName",
             message = "Acceptable values for field \"sorting\" are: 1)tagName 2)tagId")

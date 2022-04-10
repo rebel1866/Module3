@@ -1,13 +1,15 @@
 package com.epam.esm.dto;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 public class UpdateCertificateRequest {
-    @Pattern(regexp = "[A-Za-zА-Яа-я ]+", message = "rCode15")
+    @Size(min = 1,message = "rCode15")
     private String certificateName;
-    @Pattern(regexp = "[A-Za-zА-Яа-я ]+", message = "rCode16")
+    @Size(min = 1,message = "rCode16")
     private String description;
     @Pattern(regexp = "^[1-9]+[0-9]*$", message = "rCode12")
     private String price;

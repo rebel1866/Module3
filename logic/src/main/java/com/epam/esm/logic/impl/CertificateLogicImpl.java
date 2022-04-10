@@ -10,6 +10,7 @@ import com.epam.esm.dao.CertificateDao;
 import com.epam.esm.entity.Certificate;
 import com.epam.esm.exception.LogicException;
 import com.epam.esm.logic.CertificateLogic;
+import com.epam.esm.validation.Validation;
 import com.google.common.base.CaseFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,6 +45,14 @@ public class CertificateLogicImpl implements CertificateLogic {
     @Transactional
     public List<CertificateDto> findCertificates(SearchCertificateRequest request) {
         Map<String, String> params = ObjectToMapConverter.convertToMap(request);
+        String certificateName = params.get("certificateName");
+        if (certificateName != null) {
+            Validation.validateCertificateName(certificateName);
+        }
+        String tagName = params.get("tagName");
+        if (tagName != null) {
+            Validation.validateTagName(tagName);
+        }
         var iterator = params.entrySet().iterator();
         Map<String, String> newParams = new HashMap<>();
         while (iterator.hasNext()) {
@@ -58,7 +69,7 @@ public class CertificateLogicImpl implements CertificateLogic {
     @Override
     @Transactional
     public CertificateDto findCertificateById(int id) {
-        validateId(id);
+        Validation.validateId(id);
         Certificate certificate = certificateDao.findCertificateById(id);
         return CertificateEntityToDtoConverter.convert(certificate);
     }
@@ -85,14 +96,14 @@ public class CertificateLogicImpl implements CertificateLogic {
 
     @Override
     public void deleteCertificate(int id) {
-        validateId(id);
+        Validation.validateId(id);
         certificateDao.deleteCertificate(id);
     }
 
     @Override
     @Transactional
     public CertificateDto updateCertificate(UpdateCertificateRequest request, int id) {
-        validateId(id);
+        Validation.validateId(id);
         List<Tag> tags = TagDtoToEntityConverter.convertList(request.getTags());
         Map<String, String> params = UpdateDtoToMapConverter.convertToMap(request);
         certificateDao.updateCertificate(params, id);
@@ -118,11 +129,5 @@ public class CertificateLogicImpl implements CertificateLogic {
             }
         }
         return newTags;
-    }
-
-    private void validateId(int id) {
-        if (id <= 0) {
-            throw new LogicException("messageCode10", "errorCode=3");
-        }
     }
 }
