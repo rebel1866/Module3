@@ -84,12 +84,12 @@ public class CertificateLogicImpl implements CertificateLogic {
         Certificate addedCertificate;
         addedCertificate = certificateDao.addCertificate(certificate);
         int certificateId = addedCertificate.getGiftCertificateId();
-        List<Tag> tagsThatExist = newTags.stream().map(l -> tagDao.addTag(l)).collect(Collectors.toList());
-        for (Tag tag : tagsThatExist) {
+        List<Tag> tagsWithId = newTags.stream().map(l -> tagDao.addTag(l)).collect(Collectors.toList());
+        for (Tag tag : tagsWithId) {
             tagDao.addTagToCertificate(tag, certificateId);
         }
-        Certificate targetCertificate = certificateDao.findCertificateById(certificateId);
-        return CertificateEntityToDtoConverter.convert(targetCertificate);
+        addedCertificate.getTags().addAll(tagsWithId);
+        return CertificateEntityToDtoConverter.convert(addedCertificate);
     }
 
     @Override
@@ -104,13 +104,13 @@ public class CertificateLogicImpl implements CertificateLogic {
         Validation.validateId(id);
         List<Tag> tags = TagDtoToEntityConverter.convertList(request.getTags());
         Map<String, String> params = UpdateDtoToMapConverter.convertToMap(request);
-        certificateDao.updateCertificate(params, id);
+        Certificate updatedCertificate = certificateDao.updateCertificate(params, id);
         if (tags.size() != 0) {
             List<Tag> tagsWithId = tags.stream().map(tag -> tagDao.addTag(tag)).collect(Collectors.toList());
             tagsWithId.forEach(tag -> tagDao.addTagToCertificate(tag, id));
+            updatedCertificate.getTags().addAll(tagsWithId);
         }
-        Certificate certificate = certificateDao.findCertificateById(id);
-        return CertificateEntityToDtoConverter.convert(certificate);
+        return CertificateEntityToDtoConverter.convert(updatedCertificate);
     }
 
     public List<Tag> getNewTagsToAdd(List<Tag> allTags) {
