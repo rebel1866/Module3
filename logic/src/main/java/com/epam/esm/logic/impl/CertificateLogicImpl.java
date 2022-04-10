@@ -26,7 +26,7 @@ public class CertificateLogicImpl implements CertificateLogic {
     private CertificateDao certificateDao;
     private TagDao tagDao;
 
-    private static final String dateTimePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+    private static final String DATE_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS";
 
     @Autowired
     public void setCertificateDao(CertificateDao certificateDao) {
@@ -67,7 +67,7 @@ public class CertificateLogicImpl implements CertificateLogic {
     @Transactional
     public CertificateDto addCertificate(CertificateDto request) {
         Certificate certificate = CertificateDtoToEntityConverter.convert(request);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimePattern);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
         LocalDateTime now = LocalDateTime.parse(formatter.format(LocalDateTime.now()));
         certificate.setCreationDate(now);
         certificate.setLastUpdateTime(now);

@@ -10,22 +10,22 @@ import java.util.Set;
 
 public class SqlGenerator {
     private static Map<String, Action> actions = new HashMap<>();
-    private static final Action concatLike = (sql, key, value) -> {
+    private static final Action CONCAT_LIKE = (sql, key, value) -> {
         StringBuilder newValue = new StringBuilder(value);
         newValue.insert(value.length() - 1, "%");
         newValue.insert(1, "%");
         sql.append("upper(").append(key).append(") like upper(").append(newValue).append(")");
     };
-    private static final Action concatPriceFrom = (sql, key, value) -> sql.append("price" + ">=" + value);
-    private static final Action concatPriceTo = (sql, key, value) -> sql.append("price" + "<=" + value);
-    private static final Action concatCertificate = (sql, key, value) -> sql.append("gift_certificate_id" + " = " + value);
+    private static final Action CONCAT_PRICE_FROM = (sql, key, value) -> sql.append("price" + ">=" + value);
+    private static final Action CONCAT_PRICE_TO = (sql, key, value) -> sql.append("price" + "<=" + value);
+    private static final Action CONCAT_CERTIFICATE = (sql, key, value) -> sql.append("gift_certificate_id" + " = " + value);
 
     static {
-        actions.put("price_from", concatPriceFrom);
-        actions.put("price_to", concatPriceTo);
-        actions.put("certificate_name", concatLike);
-        actions.put("tag_name", concatLike);
-        actions.put("giftCertificateId", concatCertificate);
+        actions.put("price_from", CONCAT_PRICE_FROM);
+        actions.put("price_to", CONCAT_PRICE_TO);
+        actions.put("certificate_name", CONCAT_LIKE);
+        actions.put("tag_name", CONCAT_LIKE);
+        actions.put("giftCertificateId", CONCAT_CERTIFICATE);
     }
 
     public static String generateSQL(String sourceSql, Map<String, String> params) {

@@ -8,10 +8,10 @@ import java.io.IOException;
 @WebFilter (urlPatterns = "/*")
 public class EncodingFilter extends HttpFilter {
     private String encoding;
-    private static final String encodingKey = "requestEncoding";
+    private static final String ENCODING_KEY = "requestEncoding";
 
     public void init(FilterConfig config) throws ServletException {
-        encoding = config.getInitParameter(encodingKey);
+        encoding = config.getInitParameter(ENCODING_KEY);
         if (encoding == null) {
             encoding = "UTF-8";
         }

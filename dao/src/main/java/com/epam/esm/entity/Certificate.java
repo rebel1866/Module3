@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Certificate implements Serializable {
-    private static final long SerialVersionUID = 5545654654564504L;
+    private static final long SERIAL_VERSION_UID = 5545654654564504L;
     private Integer giftCertificateId;
     private String certificateName;
     private String description;

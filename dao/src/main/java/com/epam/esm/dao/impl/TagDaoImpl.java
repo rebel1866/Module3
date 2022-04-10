@@ -17,11 +17,11 @@ import java.util.Objects;
 @Repository
 public class TagDaoImpl implements TagDao {
     private JdbcTemplate jdbcTemplate;
-    private static final String tagSQL = "select tag_name, tag_id from gifts.tags";
-    private static final String addTagSql = "insert into gifts.tags (tag_name) values (?)";
-    private static final String deleteTagSql = "delete from gifts.tags where tag_id =?";
-    private static final String findByIdSql = "select * from gifts.tags where tag_id =?";
-    private static final String lastIdSql = "select max(tag_id) as max from gifts.tags";
+    private static final String TAG_SQL = "select tag_name, tag_id from gifts.tags";
+    private static final String ADD_TAG_SQL = "insert into gifts.tags (tag_name) values (?)";
+    private static final String DELETE_TAG_SQL = "delete from gifts.tags where tag_id =?";
+    private static final String FIND_BY_ID_SQL = "select * from gifts.tags where tag_id =?";
+    private static final String LAST_ID_SQL = "select max(tag_id) as max from gifts.tags";
     private static final String SEARCH_BY_NAME_SQL = "select tag_name, tag_id from gifts.tags where tag_name=?";
     private static final String ADD_TAGS_OF_CERTIFICATE = "insert into gifts.cert_tags (gift_certificate_id, tag_id) " +
             "values (?,?)";
@@ -33,7 +33,7 @@ public class TagDaoImpl implements TagDao {
 
     @Override
     public List<Tag> findTags(Map<String, String> params) {
-        String targetSql = SqlGenerator.generateSQL(tagSQL, params);
+        String targetSql = SqlGenerator.generateSQL(TAG_SQL, params);
         List<Tag> tags = jdbcTemplate.query(targetSql, new TagMapper());
         if (tags.size() == 0) {
             throw new DaoException("messageCode6", "errorCode=1");
@@ -45,7 +45,7 @@ public class TagDaoImpl implements TagDao {
     public Tag findTagById(int id) {
         Tag tag;
         try {
-            tag = jdbcTemplate.queryForObject(findByIdSql, new TagMapper(), id);
+            tag = jdbcTemplate.queryForObject(FIND_BY_ID_SQL, new TagMapper(), id);
         } catch (EmptyResultDataAccessException e) {
             throw new DaoException("messageCode7", "errorCode=1");
         }
@@ -57,7 +57,7 @@ public class TagDaoImpl implements TagDao {
         if (isTagExist(tag)) {
             throw new DaoException("messageCode12", "errorCode=3");
         }
-        int rowsAffected = jdbcTemplate.update(addTagSql, tag.getTagName());
+        int rowsAffected = jdbcTemplate.update(ADD_TAG_SQL, tag.getTagName());
         if (rowsAffected == 0) {
             throw new DaoException("messageCode8", "errorCode=2");
         }
@@ -67,7 +67,7 @@ public class TagDaoImpl implements TagDao {
 
     @Override
     public void deleteTag(int id) {
-        int rowsAffected = jdbcTemplate.update(deleteTagSql, id);
+        int rowsAffected = jdbcTemplate.update(DELETE_TAG_SQL, id);
         if (rowsAffected == 0) {
             throw new DaoException("messageCode9", "errorCode=2");
         }
@@ -79,7 +79,7 @@ public class TagDaoImpl implements TagDao {
     }
 
     private int getLastId() {
-        Integer value = jdbcTemplate.queryForObject(lastIdSql, Integer.class);
+        Integer value = jdbcTemplate.queryForObject(LAST_ID_SQL, Integer.class);
         return Objects.requireNonNullElse(value, 0);
     }
 

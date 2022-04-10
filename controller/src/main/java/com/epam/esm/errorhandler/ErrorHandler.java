@@ -21,21 +21,21 @@ import java.util.*;
 
 @RestControllerAdvice
 public class ErrorHandler extends ResponseEntityExceptionHandler {
-    private final static Map<String, HttpStatus> codesAndStatuses = new HashMap<>();
+    private final static Map<String, HttpStatus> CODES_AND_STATUSES = new HashMap<>();
     private String defaultResponse = "Error has occurred";
-    private static final String defaultLocale = "en";
-    private static final String bundleName = "lang";
+    private static final String DEFAULT_LOCALE = "en";
+    private static final String BUNDLE_NAME = "lang";
 
     static {
-        codesAndStatuses.put("errorCode=1", HttpStatus.NOT_FOUND);
-        codesAndStatuses.put("errorCode=2", HttpStatus.INTERNAL_SERVER_ERROR);
-        codesAndStatuses.put("errorCode=3", HttpStatus.BAD_REQUEST);
+        CODES_AND_STATUSES.put("errorCode=1", HttpStatus.NOT_FOUND);
+        CODES_AND_STATUSES.put("errorCode=2", HttpStatus.INTERNAL_SERVER_ERROR);
+        CODES_AND_STATUSES.put("errorCode=3", HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(RestControllerException.class)
     public ResponseEntity<String> handleControllerException(RestControllerException resException, HttpServletRequest request) {
         String localizedMessage = getLocalizedMessage(resException.getMessage(), request);
-        HttpStatus status = codesAndStatuses.get(resException.getErrorCode());
+        HttpStatus status = CODES_AND_STATUSES.get(resException.getErrorCode());
         Errors errors = resException.getErrors();
         StringBuilder causeMessage = generateCauseMessage(errors, resException, request);
         ErrorMessage errorMessage = new ErrorMessage(localizedMessage, resException.getErrorCode(),
@@ -62,7 +62,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
     }
 
     public ResponseEntity<String> handle(Exception exception, String errorCode, HttpServletRequest request) {
-        HttpStatus status = codesAndStatuses.get(errorCode);
+        HttpStatus status = CODES_AND_STATUSES.get(errorCode);
         String localizedMessage = getLocalizedMessage(exception.getMessage(), request);
         ErrorMessage errorMessage = new ErrorMessage(localizedMessage, errorCode,
                 status, localizedMessage);
@@ -96,10 +96,10 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
     private String getLocalizedMessage(String message, HttpServletRequest request) {
         String localeStr = request.getHeader("locale");
         if (localeStr == null) {
-            localeStr = defaultLocale;
+            localeStr = DEFAULT_LOCALE;
         }
         Locale locale = new Locale(localeStr);
-        ResourceBundle bundle = ResourceBundle.getBundle(bundleName, locale);
+        ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME, locale);
         return bundle.getString(message);
     }
 
