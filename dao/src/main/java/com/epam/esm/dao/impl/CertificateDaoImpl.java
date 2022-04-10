@@ -87,7 +87,7 @@ public class CertificateDaoImpl implements CertificateDao {
             if (amount == 0) {
                 throw new DaoException("WmessageCode14:" + id, "errorCode=2");
             }
-            jdbcTemplate.update(ADD_CERTIFICATE_TAGS_SQL, id);//to service
+            jdbcTemplate.update(ADD_CERTIFICATE_TAGS_SQL, id);
         }
         int id = getLastId();
         return findCertificateById(id);

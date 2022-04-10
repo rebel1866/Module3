@@ -49,7 +49,7 @@ public class TagLogicImpl implements TagLogic {
 
     @Override
     public TagDto findTagById(int id) {
-        validateId(id);
+        Validation.validateId(id);
         Tag tag;
         tag = tagDao.findTagById(id);
         return TagEntityToDtoConverter.convert(tag);
@@ -69,13 +69,7 @@ public class TagLogicImpl implements TagLogic {
 
     @Override
     public void deleteTag(int id) {
-        validateId(id);
+        Validation.validateId(id);
         tagDao.deleteTag(id);
-    }
-
-    private void validateId(int id) {
-        if (id <= 0) {
-            throw new LogicException("messageCode10", "errorCode=3");
-        }
     }
 }
