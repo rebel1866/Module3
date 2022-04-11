@@ -8,9 +8,9 @@ public class SearchTagRequest {
     @Size(min = 1,message = "rCode17")
     private String tagName;
     @Pattern(regexp = "tagId|tagName",
-            message = "Acceptable values for field \"sorting\" are: 1)tagName 2)tagId")
+            message = "rCode18")
     private String sorting;
-    @Pattern(regexp = "asc|desc", message = "sortingOrder must be: \"asc\" or \"desc\"")
+    @Pattern(regexp = "rCode5")
     private String sortingOrder;
 
     public String getTagName() {
