@@ -19,7 +19,7 @@ import java.util.Properties;
 @EnableWebMvc
 @ComponentScan("com.epam.esm")
 public class DaoConfigMySql {
-    private final static String PROPERTIES_PATH = "C:\\Users\\Stas\\IdeaProjects\\GiftsWithUI2\\dao\\src\\main\\resources" +
+    private final static String PROPERTIES_PATH = "C:\\Users\\Stas\\IdeaProjects\\Gifts_final_release\\dao\\src\\main\\resources" +
             "\\dbConfig.properties";  /* This absolute path is used only for deployment with intellij idea.
                      When deploying on actual server following relative path will be used: dbConfig.properties */
     @Bean
